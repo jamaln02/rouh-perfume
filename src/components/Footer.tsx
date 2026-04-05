@@ -1,53 +1,87 @@
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Phone, Mail, MapPin } from "lucide-react";
+import { Phone, Mail, MapPin, MessageCircle } from "lucide-react";
 
 const Footer = () => {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
 
   return (
-    <footer className="bg-secondary border-t border-gold/10">
-      <div className="container mx-auto px-4 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <footer className="bg-gradient-burgundy border-t border-gold/10">
+      <div className="container mx-auto px-4 lg:px-8 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           {/* Brand */}
-          <div>
-            <h3 className="text-2xl font-bold text-gradient-gold mb-4">{t("brand")}</h3>
-            <p className="text-muted-foreground text-sm leading-relaxed">
+          <div className="md:col-span-1">
+            <h3 className="font-display text-3xl font-bold text-gradient-gold mb-4">{t("brand")}</h3>
+            <p className="text-cream/50 text-sm leading-relaxed mb-6">
               {t("aboutText")}
             </p>
+            <a
+              href="https://wa.me/963934436980"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-[#25D366] hover:underline text-sm"
+            >
+              <MessageCircle size={16} />
+              {lang === "ar" ? "تواصل عبر واتساب" : "Chat on WhatsApp"}
+            </a>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-gold font-semibold mb-4">{t("shop")}</h4>
-            <div className="flex flex-col gap-2">
-              <Link to="/shop" className="text-muted-foreground hover:text-gold text-sm transition-colors">{t("shop")}</Link>
-              <Link to="/about" className="text-muted-foreground hover:text-gold text-sm transition-colors">{t("about")}</Link>
-              <Link to="/contact" className="text-muted-foreground hover:text-gold text-sm transition-colors">{t("contact")}</Link>
+            <h4 className="text-gold font-semibold mb-5 text-sm tracking-wider uppercase">
+              {lang === "ar" ? "روابط سريعة" : "Quick Links"}
+            </h4>
+            <div className="flex flex-col gap-3">
+              {[
+                { to: "/shop", label: t("shop") },
+                { to: "/about", label: t("about") },
+                { to: "/contact", label: t("contact") },
+                { to: "/cart", label: t("cart") },
+              ].map((link) => (
+                <Link key={link.to} to={link.to} className="text-cream/50 hover:text-gold text-sm transition-colors">
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* Categories */}
+          <div>
+            <h4 className="text-gold font-semibold mb-5 text-sm tracking-wider uppercase">
+              {t("collections")}
+            </h4>
+            <div className="flex flex-col gap-3">
+              {["men", "women", "unisex"].map((cat) => (
+                <Link key={cat} to="/shop" className="text-cream/50 hover:text-gold text-sm transition-colors">
+                  {t(cat)}
+                </Link>
+              ))}
             </div>
           </div>
 
           {/* Contact */}
           <div>
-            <h4 className="text-gold font-semibold mb-4">{t("contact")}</h4>
-            <div className="flex flex-col gap-3 text-sm text-muted-foreground">
-              <div className="flex items-center gap-2">
-                <Phone size={16} className="text-gold" />
-                <span dir="ltr">+963 9XX XXX XXXX</span>
+            <h4 className="text-gold font-semibold mb-5 text-sm tracking-wider uppercase">
+              {t("contact")}
+            </h4>
+            <div className="flex flex-col gap-4 text-sm text-cream/50">
+              <div className="flex items-center gap-3">
+                <Phone size={16} className="text-gold shrink-0" />
+                <span dir="ltr">+963 934 436 980</span>
               </div>
-              <div className="flex items-center gap-2">
-                <Mail size={16} className="text-gold" />
+              <div className="flex items-center gap-3">
+                <Mail size={16} className="text-gold shrink-0" />
                 <span>info@rouh.sy</span>
               </div>
-              <div className="flex items-center gap-2">
-                <MapPin size={16} className="text-gold" />
-                <span>{t("address")}: Damascus, Syria</span>
+              <div className="flex items-center gap-3">
+                <MapPin size={16} className="text-gold shrink-0" />
+                <span>{lang === "ar" ? "دمشق، سوريا" : "Damascus, Syria"}</span>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="mt-8 pt-8 border-t border-gold/10 text-center text-sm text-muted-foreground">
+        <div className="mt-12 pt-8 border-t border-cream/10 text-center text-sm text-cream/30">
           © 2026 {t("brand")}. {t("rights")}.
         </div>
       </div>

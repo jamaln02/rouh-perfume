@@ -41,7 +41,7 @@ const Checkout = () => {
     const msg = encodeURIComponent(
       `${lang === "ar" ? "طلب جديد" : "New Order"}\n\n${orderItems}\n\n${t("total")}: ${formatPrice(totalPrice + shippingCost)} SYP\n${t("name")}: ${form.name}\n${t("phone")}: ${form.phone}\n${t("city")}: ${lang === "ar" ? city.ar : city.en}\n${t("address")}: ${form.address}`
     );
-    window.open(`https://wa.me/963900000000?text=${msg}`, "_blank");
+    window.open(`https://wa.me/963934436980?text=${msg}`, "_blank");
     clearCart();
     toast.success(lang === "ar" ? "تم إرسال الطلب بنجاح!" : "Order placed successfully!");
     navigate("/");

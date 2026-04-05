@@ -1,6 +1,7 @@
 import { useLanguage } from "@/contexts/LanguageContext";
 import { motion } from "framer-motion";
 import heroImage from "@/assets/hero-perfume.jpg";
+import { Sparkles } from "lucide-react";
 
 const About = () => {
   const { t, lang } = useLanguage();
@@ -26,24 +27,40 @@ const About = () => {
   return (
     <div className="min-h-screen pt-20 lg:pt-24">
       {/* Hero */}
-      <div className="relative h-64 md:h-80">
-        <img src={heroImage} alt="About Rouh" className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-foreground/60 flex items-center justify-center">
-          <h1 className="text-4xl md:text-5xl font-bold text-gradient-gold">{t("aboutTitle")}</h1>
+      <div className="relative h-72 md:h-96 overflow-hidden">
+        <motion.img
+          initial={{ scale: 1.1 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 1.2 }}
+          src={heroImage}
+          alt="About Rouh"
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-foreground/40 to-foreground/60 flex items-center justify-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center"
+          >
+            <Sparkles className="text-gold mx-auto mb-4" size={28} />
+            <h1 className="font-display text-5xl md:text-6xl font-bold text-gradient-gold">{t("aboutTitle")}</h1>
+          </motion.div>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 lg:px-8 py-16">
-        <div className="max-w-3xl mx-auto space-y-12">
+      <div className="container mx-auto px-4 lg:px-8 py-20">
+        <div className="max-w-3xl mx-auto space-y-16">
           {sections.map((section, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.15 }}
+              transition={{ delay: i * 0.15, duration: 0.6 }}
+              className="relative"
             >
-              <h2 className="text-2xl font-bold text-gold mb-4">{section.title}</h2>
+              <div className="absolute -start-6 top-0 w-1 h-full bg-gradient-to-b from-gold to-transparent rounded-full hidden md:block" />
+              <h2 className="font-display text-3xl font-bold text-gold mb-5">{section.title}</h2>
               <p className="text-muted-foreground leading-relaxed text-lg">
                 {lang === "ar" ? section.textAr : section.textEn}
               </p>
