@@ -45,7 +45,7 @@ const Contact = () => {
             </p>
             <div className="space-y-6">
               {[
-                { icon: Phone, label: t("phone"), value: "+963 9XX XXX XXXX" },
+                { icon: Phone, label: t("phone"), value: "+963 934 436 980" },
                 { icon: Mail, label: t("email"), value: "info@rouh.sy" },
                 { icon: MapPin, label: t("address"), value: lang === "ar" ? "دمشق، سوريا" : "Damascus, Syria" },
               ].map((item, i) => (

@@ -112,7 +112,7 @@ const ProductDetails = () => {
                 {t("addToCart")}
               </button>
               <a
-                href={`https://wa.me/963900000000?text=${whatsappMsg}`}
+                href={`https://wa.me/963934436980?text=${whatsappMsg}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex-1 flex items-center justify-center gap-2 border border-[#25D366] text-[#25D366] px-6 py-3 rounded-lg font-semibold hover:bg-[#25D366] hover:text-accent-foreground transition-colors"
