@@ -9,6 +9,7 @@ import { motion, AnimatePresence } from "framer-motion";
 const Navbar = () => {
   const { t, lang, setLang } = useLanguage();
   const { totalItems } = useCart();
+  const { user, isAdmin, signOut } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
