@@ -1,13 +1,15 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { ShoppingBag, Menu, X, Globe, Search } from "lucide-react";
+import { ShoppingBag, Menu, X, Globe, Search, User, Shield } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCart } from "@/contexts/CartContext";
+import { useAuth } from "@/hooks/useAuth";
 import { motion, AnimatePresence } from "framer-motion";
 
 const Navbar = () => {
   const { t, lang, setLang } = useLanguage();
   const { totalItems } = useCart();
+  const { user, isAdmin, signOut } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -84,6 +86,20 @@ const Navbar = () => {
               <Globe size={18} />
               <span className="hidden sm:inline font-medium">{lang === "ar" ? "EN" : "عربي"}</span>
             </button>
+            {isAdmin && (
+              <Link to="/admin" className="text-secondary-foreground hover:text-gold transition-colors">
+                <Shield size={20} />
+              </Link>
+            )}
+            {user ? (
+              <button onClick={signOut} className="text-secondary-foreground hover:text-gold transition-colors">
+                <User size={20} />
+              </button>
+            ) : (
+              <Link to="/auth" className="text-secondary-foreground hover:text-gold transition-colors">
+                <User size={20} />
+              </Link>
+            )}
             <Link to="/cart" className="relative text-secondary-foreground hover:text-gold transition-colors">
               <ShoppingBag size={20} />
               {totalItems > 0 && (
