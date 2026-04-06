@@ -60,7 +60,7 @@ const AdminUsers = () => {
                 <TableCell className="font-medium">{u.full_name || "—"}</TableCell>
                 <TableCell>{u.phone || "—"}</TableCell>
                 <TableCell>
-                  <Select value={u.role} onValueChange={(v) => updateRole(u.id, v)}>
+                  <Select value={u.role} onValueChange={(v) => updateRole(u.id, v as "admin" | "user")}>
                     <SelectTrigger className="w-28">
                       <Badge className={u.role === "admin" ? "bg-primary/20 text-primary" : "bg-muted text-muted-foreground"}>
                         {u.role === "admin" ? (lang === "ar" ? "أدمن" : "Admin") : (lang === "ar" ? "مستخدم" : "User")}
