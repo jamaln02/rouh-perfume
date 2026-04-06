@@ -86,6 +86,20 @@ const Navbar = () => {
               <Globe size={18} />
               <span className="hidden sm:inline font-medium">{lang === "ar" ? "EN" : "عربي"}</span>
             </button>
+            {isAdmin && (
+              <Link to="/admin" className="text-secondary-foreground hover:text-gold transition-colors">
+                <Shield size={20} />
+              </Link>
+            )}
+            {user ? (
+              <button onClick={signOut} className="text-secondary-foreground hover:text-gold transition-colors">
+                <User size={20} />
+              </button>
+            ) : (
+              <Link to="/auth" className="text-secondary-foreground hover:text-gold transition-colors">
+                <User size={20} />
+              </Link>
+            )}
             <Link to="/cart" className="relative text-secondary-foreground hover:text-gold transition-colors">
               <ShoppingBag size={20} />
               {totalItems > 0 && (
