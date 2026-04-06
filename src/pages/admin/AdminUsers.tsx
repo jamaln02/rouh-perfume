@@ -33,7 +33,7 @@ const AdminUsers = () => {
 
   useEffect(() => { fetchUsers(); }, []);
 
-  const updateRole = async (userId: string, role: string) => {
+  const updateRole = async (userId: string, role: "admin" | "user") => {
     const { error } = await supabase.from("user_roles").update({ role }).eq("user_id", userId);
     if (error) toast.error(error.message);
     else { toast.success(lang === "ar" ? "تم تحديث الصلاحية" : "Role updated"); fetchUsers(); }
