@@ -79,6 +79,10 @@ const translations: Translations = {
   supportDesc: { ar: "نحن هنا لمساعدتك", en: "We're here to help" },
   collections: { ar: "المجموعات", en: "Collections" },
   exploreCollection: { ar: "استكشف المجموعة", en: "Explore Collection" },
+  login: { ar: "تسجيل الدخول", en: "Sign In" },
+  signup: { ar: "إنشاء حساب", en: "Sign Up" },
+  logout: { ar: "تسجيل الخروج", en: "Sign Out" },
+  adminPanel: { ar: "لوحة التحكم", en: "Admin Panel" },
 };
 
 interface LanguageContextType {
