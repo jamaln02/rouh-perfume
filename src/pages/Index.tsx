@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { products } from "@/data/products";
+import { useProducts } from "@/hooks/useProducts";
 import ProductCard from "@/components/ProductCard";
 import heroImage from "@/assets/hero-perfume.jpg";
 import { motion } from "framer-motion";
@@ -8,6 +8,7 @@ import { Truck, Shield, Headphones, ArrowRight, Sparkles, Star } from "lucide-re
 
 const Index = () => {
   const { t, lang } = useLanguage();
+  const { products, loading } = useProducts();
 
   const featured = products.filter((p) => p.featured);
   const bestSellers = products.filter((p) => p.bestSeller);
@@ -147,11 +148,21 @@ const Index = () => {
             </span>
             <h2 className="font-display text-4xl md:text-5xl font-bold text-gradient-gold">{t("featured")}</h2>
           </motion.div>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 lg:gap-8">
-            {featured.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
+          {loading ? (
+            <div className="flex justify-center py-12"><div className="animate-spin h-8 w-8 border-2 border-primary border-t-transparent rounded-full" /></div>
+          ) : featured.length > 0 ? (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 lg:gap-8">
+              {featured.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 lg:gap-8">
+              {products.slice(0, 4).map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
@@ -204,11 +215,15 @@ const Index = () => {
             </span>
             <h2 className="font-display text-4xl md:text-5xl font-bold text-gradient-gold">{t("bestSellers")}</h2>
           </motion.div>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-6 lg:gap-8">
-            {bestSellers.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
+          {loading ? (
+            <div className="flex justify-center py-12"><div className="animate-spin h-8 w-8 border-2 border-primary border-t-transparent rounded-full" /></div>
+          ) : (
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-6 lg:gap-8">
+              {(bestSellers.length > 0 ? bestSellers : products.slice(0, 3)).map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          )}
           <div className="text-center mt-12">
             <Link
               to="/shop"

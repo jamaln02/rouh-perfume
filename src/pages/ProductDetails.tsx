@@ -2,9 +2,9 @@ import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCart } from "@/contexts/CartContext";
-import { getProduct, products } from "@/data/products";
+import { useProduct, useProducts } from "@/hooks/useProducts";
 import ProductCard from "@/components/ProductCard";
-import { ShoppingBag, MessageCircle, ChevronLeft, ChevronRight, Truck, Shield } from "lucide-react";
+import { ShoppingBag, MessageCircle, Truck, Shield } from "lucide-react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
@@ -13,8 +13,22 @@ const ProductDetails = () => {
   const { id } = useParams();
   const { t, lang } = useLanguage();
   const { addItem } = useCart();
-  const product = getProduct(id || "");
-  const [selectedSize, setSelectedSize] = useState(product?.sizes[0] || "");
+  const { product, loading } = useProduct(id || "");
+  const { products } = useProducts();
+  const [selectedSize, setSelectedSize] = useState("");
+
+  // Set default size when product loads
+  if (product && !selectedSize && product.sizes.length > 0) {
+    // This will trigger a re-render but only once
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen pt-24 flex items-center justify-center">
+        <div className="animate-spin h-8 w-8 border-2 border-primary border-t-transparent rounded-full" />
+      </div>
+    );
+  }
 
   if (!product) {
     return (
@@ -28,6 +42,8 @@ const ProductDetails = () => {
       </div>
     );
   }
+
+  const currentSize = selectedSize || product.sizes[0] || "";
 
   const related = products
     .filter((p) => p.id !== product.id && (p.category === product.category || p.fragrance === product.fragrance))
@@ -43,15 +59,15 @@ const ProductDetails = () => {
       nameAr: product.nameAr,
       price: product.price,
       image: product.image,
-      size: selectedSize,
+      size: currentSize,
     });
     toast.success(lang === "ar" ? "تمت الإضافة إلى السلة" : "Added to cart");
   };
 
   const whatsappMsg = encodeURIComponent(
     lang === "ar"
-      ? `مرحباً، أريد شراء ${product.nameAr} - ${selectedSize}`
-      : `Hi, I want to buy ${product.name} - ${selectedSize}`
+      ? `مرحباً، أريد شراء ${product.nameAr} - ${currentSize}`
+      : `Hi, I want to buy ${product.name} - ${currentSize}`
   );
 
   return (
@@ -111,24 +127,26 @@ const ProductDetails = () => {
               </p>
 
               {/* Size selector */}
-              <div className="mb-8">
-                <p className="text-sm font-semibold text-foreground mb-3 uppercase tracking-wider">{t("size")}</p>
-                <div className="flex gap-3">
-                  {product.sizes.map((size) => (
-                    <button
-                      key={size}
-                      onClick={() => setSelectedSize(size)}
-                      className={`px-6 py-3 rounded-xl border-2 text-sm font-medium transition-all duration-200 ${
-                        selectedSize === size
-                          ? "border-gold bg-gold text-accent-foreground shadow-gold"
-                          : "border-border text-foreground hover:border-gold"
-                      }`}
-                    >
-                      {size}
-                    </button>
-                  ))}
+              {product.sizes.length > 0 && (
+                <div className="mb-8">
+                  <p className="text-sm font-semibold text-foreground mb-3 uppercase tracking-wider">{t("size")}</p>
+                  <div className="flex gap-3">
+                    {product.sizes.map((size) => (
+                      <button
+                        key={size}
+                        onClick={() => setSelectedSize(size)}
+                        className={`px-6 py-3 rounded-xl border-2 text-sm font-medium transition-all duration-200 ${
+                          currentSize === size
+                            ? "border-gold bg-gold text-accent-foreground shadow-gold"
+                            : "border-border text-foreground hover:border-gold"
+                        }`}
+                      >
+                        {size}
+                      </button>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* Actions */}
               <div className="flex flex-col sm:flex-row gap-3 mb-8">

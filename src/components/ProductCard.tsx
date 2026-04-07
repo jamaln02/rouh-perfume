@@ -2,12 +2,12 @@ import { Link } from "react-router-dom";
 import { ShoppingBag, Eye } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCart } from "@/contexts/CartContext";
-import { Product } from "@/data/products";
+import { ProductView } from "@/hooks/useProducts";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 
 interface ProductCardProps {
-  product: Product;
+  product: ProductView;
 }
 
 const ProductCard = ({ product }: ProductCardProps) => {
