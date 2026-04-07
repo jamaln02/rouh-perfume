@@ -1,12 +1,13 @@
 import { useState, useMemo } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { products } from "@/data/products";
+import { useProducts } from "@/hooks/useProducts";
 import ProductCard from "@/components/ProductCard";
 import { Search, SlidersHorizontal, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const Shop = () => {
   const { t, lang } = useLanguage();
+  const { products, loading } = useProducts();
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
   const [fragrance, setFragrance] = useState("all");
@@ -33,12 +34,20 @@ const Shop = () => {
     }
 
     return result;
-  }, [search, category, fragrance, sort]);
+  }, [products, search, category, fragrance, sort]);
 
   const categories = ["all", "men", "women", "unisex"];
   const fragrances = ["all", "oud", "floral", "woody", "fresh", "oriental"];
 
   const activeFilters = (category !== "all" ? 1 : 0) + (fragrance !== "all" ? 1 : 0);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen pt-20 flex items-center justify-center">
+        <div className="animate-spin h-8 w-8 border-2 border-primary border-t-transparent rounded-full" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen pt-20 lg:pt-24">
