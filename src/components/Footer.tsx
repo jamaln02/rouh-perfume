@@ -65,18 +65,18 @@ const Footer = () => {
               {t("contact")}
             </h4>
             <div className="flex flex-col gap-4 text-sm text-cream/50">
-              <div className="flex items-center gap-3">
+              <a href="tel:+963933898625" className="flex items-center gap-3 hover:text-gold transition-colors">
                 <Phone size={16} className="text-gold shrink-0" />
                 <span dir="ltr">+963 933 898 625</span>
-              </div>
-              <div className="flex items-center gap-3">
+              </a>
+              <a href="mailto:info@rouh.sy" className="flex items-center gap-3 hover:text-gold transition-colors">
                 <Mail size={16} className="text-gold shrink-0" />
                 <span>info@rouh.sy</span>
-              </div>
-              <div className="flex items-center gap-3">
+              </a>
+              <a href="https://maps.google.com/?q=Damascus,Syria" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 hover:text-gold transition-colors">
                 <MapPin size={16} className="text-gold shrink-0" />
                 <span>{lang === "ar" ? "دمشق، سوريا" : "Damascus, Syria"}</span>
-              </div>
+              </a>
             </div>
           </div>
         </div>
