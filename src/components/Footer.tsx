@@ -16,7 +16,7 @@ const Footer = () => {
               {t("aboutText")}
             </p>
             <a
-              href="https://wa.me/963934436980"
+              href="https://wa.me/963933898625"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-[#25D366] hover:underline text-sm"
@@ -52,7 +52,7 @@ const Footer = () => {
             </h4>
             <div className="flex flex-col gap-3">
               {["men", "women", "unisex"].map((cat) => (
-                <Link key={cat} to="/shop" className="text-cream/50 hover:text-gold text-sm transition-colors">
+                <Link key={cat} to={`/shop?category=${cat}`} className="text-cream/50 hover:text-gold text-sm transition-colors">
                   {t(cat)}
                 </Link>
               ))}
@@ -67,7 +67,7 @@ const Footer = () => {
             <div className="flex flex-col gap-4 text-sm text-cream/50">
               <div className="flex items-center gap-3">
                 <Phone size={16} className="text-gold shrink-0" />
-                <span dir="ltr">+963 934 436 980</span>
+                <span dir="ltr">+963 933 898 625</span>
               </div>
               <div className="flex items-center gap-3">
                 <Mail size={16} className="text-gold shrink-0" />
