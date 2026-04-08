@@ -67,10 +67,10 @@ const Checkout = () => {
 
       if (orderError) throw orderError;
 
-      // Save order items
+      // Save order items (product_id set to null to avoid FK issues with deleted products)
       const orderItems = items.map((item) => ({
         order_id: orderId,
-        product_id: item.id,
+        product_id: null,
         product_name: lang === "ar" ? item.nameAr : item.name,
         size: item.size,
         quantity: item.quantity,
@@ -80,18 +80,20 @@ const Checkout = () => {
       const { error: itemsError } = await supabase.from("order_items").insert(orderItems);
       if (itemsError) throw itemsError;
 
-      // Send WhatsApp notification
+      // Build WhatsApp message link
       const orderItemsText = items
         .map((i) => `${lang === "ar" ? i.nameAr : i.name} (${i.size}) x${i.quantity}`)
         .join("\n");
       const msg = encodeURIComponent(
         `${lang === "ar" ? "🛒 طلب جديد" : "🛒 New Order"}\n\n${orderItemsText}\n\n💰 ${t("total")}: ${formatPrice(grandTotal)} SYP\n👤 ${form.name}\n📱 ${form.phone}\n🏙️ ${lang === "ar" ? city.ar : city.en}\n📍 ${form.address}${form.notes ? `\n📝 ${form.notes}` : ""}`
       );
-      window.open(`https://wa.me/963933898625?text=${msg}`, "_blank");
+      const whatsappUrl = `https://wa.me/963933898625?text=${msg}`;
 
       clearCart();
       toast.success(lang === "ar" ? "تم إرسال طلبك بنجاح! 🎉" : "Order placed successfully! 🎉");
-      navigate("/");
+      
+      // Use location.href for WhatsApp redirect (avoids popup blocker)
+      window.location.href = whatsappUrl;
     } catch (err) {
       console.error(err);
       toast.error(lang === "ar" ? "حدث خطأ، حاول مرة أخرى" : "An error occurred, please try again");
