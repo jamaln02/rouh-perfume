@@ -36,8 +36,9 @@ const Navbar = () => {
 
   const isHome = location.pathname === "/";
   const navBg = scrolled || !isHome
-    ? "bg-secondary/98 backdrop-blur-2xl border-b border-primary/5 shadow-[0_2px_20px_-4px_rgba(0,0,0,0.15)]"
-    : "bg-transparent";
+    ? "bg-background/95 backdrop-blur-2xl border-b border-border shadow-[0_2px_20px_-4px_rgba(0,0,0,0.08)]"
+    : "bg-gradient-burgundy";
+  const textColor = scrolled || !isHome ? "text-foreground" : "text-secondary-foreground";
 
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${navBg}`}>
@@ -46,7 +47,7 @@ const Navbar = () => {
           {/* Mobile menu button */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="lg:hidden text-secondary-foreground hover:text-primary transition-colors p-1"
+            className={`lg:hidden ${textColor} hover:text-primary transition-colors p-1`}
             aria-label="Menu"
           >
             <AnimatePresence mode="wait">
@@ -78,7 +79,7 @@ const Navbar = () => {
                 className={`relative px-4 py-2 text-sm font-medium rounded-lg transition-all duration-300 ${
                   location.pathname === link.to
                     ? "text-primary"
-                    : "text-secondary-foreground hover:text-primary hover:bg-primary/5"
+                    : `${textColor} hover:text-primary hover:bg-primary/5`
                 }`}
               >
                 {link.label}
@@ -97,7 +98,7 @@ const Navbar = () => {
           <div className="flex items-center gap-1.5 lg:gap-2">
             <button
               onClick={() => setSearchOpen(!searchOpen)}
-              className="p-2 rounded-lg text-secondary-foreground hover:text-primary hover:bg-primary/5 transition-all duration-200"
+              className={`p-2 rounded-lg ${textColor} hover:text-primary hover:bg-primary/5 transition-all duration-200`}
               aria-label="Search"
             >
               <Search size={18} />
@@ -105,7 +106,7 @@ const Navbar = () => {
 
             <button
               onClick={() => setLang(lang === "ar" ? "en" : "ar")}
-              className="p-2 rounded-lg text-secondary-foreground hover:text-primary hover:bg-primary/5 transition-all duration-200 flex items-center gap-1"
+              className={`p-2 rounded-lg ${textColor} hover:text-primary hover:bg-primary/5 transition-all duration-200 flex items-center gap-1`}
               aria-label="Language"
             >
               <Globe size={18} />
@@ -115,7 +116,7 @@ const Navbar = () => {
             {isAdmin && (
               <Link
                 to="/admin"
-                className="p-2 rounded-lg text-secondary-foreground hover:text-primary hover:bg-primary/5 transition-all duration-200"
+                className={`p-2 rounded-lg ${textColor} hover:text-primary hover:bg-primary/5 transition-all duration-200`}
                 aria-label="Admin"
               >
                 <Shield size={18} />
@@ -125,7 +126,7 @@ const Navbar = () => {
             {user ? (
               <button
                 onClick={signOut}
-                className="p-2 rounded-lg text-secondary-foreground hover:text-primary hover:bg-primary/5 transition-all duration-200"
+                className={`p-2 rounded-lg ${textColor} hover:text-primary hover:bg-primary/5 transition-all duration-200`}
                 aria-label="Sign Out"
               >
                 <User size={18} />
@@ -133,14 +134,14 @@ const Navbar = () => {
             ) : (
               <Link
                 to="/auth"
-                className="p-2 rounded-lg text-secondary-foreground hover:text-primary hover:bg-primary/5 transition-all duration-200"
+                className={`p-2 rounded-lg ${textColor} hover:text-primary hover:bg-primary/5 transition-all duration-200`}
                 aria-label="Sign In"
               >
                 <User size={18} />
               </Link>
             )}
 
-            <Link to="/cart" className="relative p-2 rounded-lg text-secondary-foreground hover:text-primary hover:bg-primary/5 transition-all duration-200">
+            <Link to="/cart" className={`relative p-2 rounded-lg ${textColor} hover:text-primary hover:bg-primary/5 transition-all duration-200`}>
               <ShoppingBag size={18} />
               {totalItems > 0 && (
                 <motion.span
@@ -205,7 +206,7 @@ const Navbar = () => {
                     className={`block text-base font-medium py-3 px-4 rounded-xl transition-all duration-200 ${
                       location.pathname === link.to
                         ? "text-primary bg-primary/5"
-                        : "text-secondary-foreground hover:text-primary hover:bg-primary/5"
+                        : "text-foreground hover:text-primary hover:bg-primary/5"
                     }`}
                   >
                     {link.label}

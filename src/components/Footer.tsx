@@ -16,7 +16,7 @@ const Footer = () => {
               {t("aboutText")}
             </p>
             <a
-              href="https://wa.me/963934436980"
+              href="https://wa.me/963933898625"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-[#25D366] hover:underline text-sm"
@@ -52,7 +52,7 @@ const Footer = () => {
             </h4>
             <div className="flex flex-col gap-3">
               {["men", "women", "unisex"].map((cat) => (
-                <Link key={cat} to="/shop" className="text-cream/50 hover:text-gold text-sm transition-colors">
+                <Link key={cat} to={`/shop?category=${cat}`} className="text-cream/50 hover:text-gold text-sm transition-colors">
                   {t(cat)}
                 </Link>
               ))}
@@ -65,18 +65,18 @@ const Footer = () => {
               {t("contact")}
             </h4>
             <div className="flex flex-col gap-4 text-sm text-cream/50">
-              <div className="flex items-center gap-3">
+              <a href="tel:+963933898625" className="flex items-center gap-3 hover:text-gold transition-colors">
                 <Phone size={16} className="text-gold shrink-0" />
-                <span dir="ltr">+963 934 436 980</span>
-              </div>
-              <div className="flex items-center gap-3">
+                <span dir="ltr">+963 933 898 625</span>
+              </a>
+              <a href="mailto:info@rouh.sy" className="flex items-center gap-3 hover:text-gold transition-colors">
                 <Mail size={16} className="text-gold shrink-0" />
                 <span>info@rouh.sy</span>
-              </div>
-              <div className="flex items-center gap-3">
+              </a>
+              <a href="https://maps.google.com/?q=Damascus,Syria" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 hover:text-gold transition-colors">
                 <MapPin size={16} className="text-gold shrink-0" />
                 <span>{lang === "ar" ? "دمشق، سوريا" : "Damascus, Syria"}</span>
-              </div>
+              </a>
             </div>
           </div>
         </div>
