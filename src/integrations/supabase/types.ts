@@ -226,6 +226,36 @@ export type Database = {
         }
         Relationships: []
       }
+      quiz_discounts: {
+        Row: {
+          created_at: string
+          discount_code: string
+          id: string
+          phone: string
+          recommended_product: string
+          recommended_product_ar: string
+          used: boolean
+        }
+        Insert: {
+          created_at?: string
+          discount_code: string
+          id?: string
+          phone: string
+          recommended_product: string
+          recommended_product_ar: string
+          used?: boolean
+        }
+        Update: {
+          created_at?: string
+          discount_code?: string
+          id?: string
+          phone?: string
+          recommended_product?: string
+          recommended_product_ar?: string
+          used?: boolean
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           id: string
