@@ -4,7 +4,7 @@ import { useProducts } from "@/hooks/useProducts";
 import ProductCard from "@/components/ProductCard";
 import heroImage from "@/assets/hero-perfume.jpg";
 import { motion } from "framer-motion";
-import { Truck, Shield, Headphones, ArrowRight, Sparkles, Star } from "lucide-react";
+import { Truck, Shield, Headphones, ArrowRight, Sparkles, Star, Gift } from "lucide-react";
 
 const Index = () => {
   const { t, lang } = useLanguage();
