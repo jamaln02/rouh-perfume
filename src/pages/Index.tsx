@@ -4,7 +4,7 @@ import { useProducts } from "@/hooks/useProducts";
 import ProductCard from "@/components/ProductCard";
 import heroImage from "@/assets/hero-perfume.jpg";
 import { motion } from "framer-motion";
-import { Truck, Shield, Headphones, ArrowRight, Sparkles, Star } from "lucide-react";
+import { Truck, Shield, Headphones, ArrowRight, Sparkles, Star, Gift } from "lucide-react";
 
 const Index = () => {
   const { t, lang } = useLanguage();
@@ -166,7 +166,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Promo Banner */}
+      {/* Quiz CTA Banner */}
       <section className="py-20 bg-gradient-burgundy relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 left-0 w-96 h-96 bg-gold rounded-full blur-[120px]" />
@@ -182,21 +182,29 @@ const Index = () => {
             <Sparkles className="text-gold mx-auto mb-6" size={32} />
             <h2 className="font-display text-3xl md:text-5xl font-bold text-cream mb-6 text-balance">
               {lang === "ar"
-                ? "اكتشف سحر العطور الشرقية الأصيلة"
-                : "Discover the Magic of Authentic Oriental Fragrances"}
+                ? "مش عارف شو العطر يلي بناسبك؟"
+                : "Not Sure Which Scent Suits You?"}
             </h2>
-            <p className="text-cream/60 text-lg mb-10 max-w-xl mx-auto">
+            <p className="text-cream/60 text-lg mb-4 max-w-xl mx-auto">
               {lang === "ar"
-                ? "مكونات طبيعية فاخرة من أجود المصادر العالمية"
-                : "Premium natural ingredients sourced from the finest global origins"}
+                ? "خذ اختبار الشخصية واكتشف عطرك المثالي بـ 5 أسئلة بسيطة"
+                : "Take our personality quiz and discover your perfect fragrance in 5 simple questions"}
             </p>
-            <Link
-              to="/shop"
-              className="group inline-flex items-center gap-3 bg-gradient-gold text-accent-foreground px-8 py-4 rounded-full font-semibold hover:shadow-gold-lg transition-all duration-300"
-            >
-              {t("exploreCollection")}
-              <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-            </Link>
+            <div className="bg-gold/20 border border-gold/30 rounded-xl px-5 py-3 inline-flex items-center gap-2 mb-8">
+              <Gift size={18} className="text-gold" />
+              <span className="text-gold font-bold text-sm">
+                {lang === "ar" ? "واحصل على خصم 10% كمكافأة!" : "And get 10% off as a reward!"}
+              </span>
+            </div>
+            <div>
+              <Link
+                to="/quiz"
+                className="group inline-flex items-center gap-3 bg-gradient-gold text-accent-foreground px-8 py-4 rounded-full font-semibold hover:shadow-gold-lg transition-all duration-300"
+              >
+                {lang === "ar" ? "ابدأ الاختبار الآن" : "Start the Quiz Now"}
+                <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </div>
           </motion.div>
         </div>
       </section>
