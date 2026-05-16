@@ -2,6 +2,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { motion } from "framer-motion";
 import heroImage from "@/assets/hero-perfume.jpg";
 import { Sparkles } from "lucide-react";
+import SEO from "@/components/SEO";
 
 const About = () => {
   const { t, lang } = useLanguage();
@@ -26,6 +27,11 @@ const About = () => {
 
   return (
     <div className="min-h-screen pt-20 lg:pt-24">
+      <SEO
+        title={lang === "ar" ? "من نحن | روح" : "About Us | Rouh"}
+        description={lang === "ar" ? "قصة روح ورؤيتنا ورسالتنا في صناعة العطور السورية الفاخرة من قلب دمشق." : "The Rouh story, vision, and mission in crafting Syrian luxury perfumes from the heart of Damascus."}
+        path="/about"
+      />
       {/* Hero */}
       <div className="relative h-72 md:h-96 overflow-hidden">
         <motion.img
