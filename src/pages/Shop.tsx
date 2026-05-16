@@ -111,7 +111,7 @@ const Shop = () => {
           <aside className={`${showFilters ? "block" : "hidden"} sm:block w-full sm:w-52 shrink-0`}>
             <div className="sticky top-28 space-y-8">
               <div>
-                <h3 className="font-semibold text-foreground mb-4 text-sm tracking-wider uppercase">{t("category")}</h3>
+                <h2 className="font-semibold text-foreground mb-4 text-sm tracking-wider uppercase">{t("category")}</h2>
                 <div className="flex flex-col gap-1">
                   {categories.map((cat) => (
                     <button
@@ -129,7 +129,7 @@ const Shop = () => {
                 </div>
               </div>
               <div>
-                <h3 className="font-semibold text-foreground mb-4 text-sm tracking-wider uppercase">{t("fragrance") || "Fragrance"}</h3>
+                <h2 className="font-semibold text-foreground mb-4 text-sm tracking-wider uppercase">{t("fragrance") || "Fragrance"}</h2>
                 <div className="flex flex-col gap-1">
                   {fragrances.map((frag) => (
                     <button
