@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ShieldCheck, Truck, CreditCard, MessageCircle, ChevronDown } from "lucide-react";
+import SEO from "@/components/SEO";
 
 const cities = [
   { ar: "دمشق", en: "Damascus", shipping: 0 },
@@ -112,7 +113,13 @@ const Checkout = () => {
 
   return (
     <div className="min-h-screen pt-20 lg:pt-24 pb-12">
+      <SEO
+        title={lang === "ar" ? "إتمام الطلب | روح" : "Checkout | Rouh"}
+        description={lang === "ar" ? "أكمل بيانات التوصيل وادفع عند الاستلام لطلبك من عطور روح." : "Complete delivery details and pay cash on delivery for your Rouh perfumes order."}
+        path="/checkout"
+      />
       <div className="container mx-auto px-4 lg:px-8">
+        <h1 className="sr-only">{lang === "ar" ? "إتمام الطلب" : "Checkout"}</h1>
         {/* Progress Steps */}
         <div className="flex items-center justify-center gap-2 mb-10">
           {[1, 2].map((s) => (
@@ -152,10 +159,11 @@ const Checkout = () => {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-sm font-medium text-foreground mb-1.5 block">
+                  <label htmlFor="checkout-name" className="text-sm font-medium text-foreground mb-1.5 block">
                     {t("name")} <span className="text-destructive">*</span>
                   </label>
                   <input
+                    id="checkout-name"
                     type="text"
                     placeholder={lang === "ar" ? "الاسم الكامل" : "Full Name"}
                     value={form.name}
@@ -165,10 +173,11 @@ const Checkout = () => {
                   />
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-foreground mb-1.5 block">
+                  <label htmlFor="checkout-phone" className="text-sm font-medium text-foreground mb-1.5 block">
                     {t("phone")} <span className="text-destructive">*</span>
                   </label>
                   <input
+                    id="checkout-phone"
                     type="tel"
                     placeholder="+963 9XX XXX XXX"
                     value={form.phone}
@@ -181,11 +190,12 @@ const Checkout = () => {
               </div>
 
               <div>
-                <label className="text-sm font-medium text-foreground mb-1.5 block">
+                <label htmlFor="checkout-city" className="text-sm font-medium text-foreground mb-1.5 block">
                   {t("city")} <span className="text-destructive">*</span>
                 </label>
                 <div className="relative">
                   <select
+                    id="checkout-city"
                     value={lang === "ar" ? city.ar : city.en}
                     onChange={(e) => {
                       const found = cities.find((c) => (lang === "ar" ? c.ar : c.en) === e.target.value);
@@ -207,10 +217,11 @@ const Checkout = () => {
               </div>
 
               <div>
-                <label className="text-sm font-medium text-foreground mb-1.5 block">
+                <label htmlFor="checkout-address" className="text-sm font-medium text-foreground mb-1.5 block">
                   {t("deliveryAddress")} <span className="text-destructive">*</span>
                 </label>
                 <textarea
+                  id="checkout-address"
                   placeholder={lang === "ar" ? "العنوان التفصيلي للتوصيل" : "Detailed delivery address"}
                   value={form.address}
                   onChange={(e) => setForm({ ...form, address: e.target.value })}
@@ -220,10 +231,11 @@ const Checkout = () => {
               </div>
 
               <div>
-                <label className="text-sm font-medium text-foreground mb-1.5 block">
+                <label htmlFor="checkout-notes" className="text-sm font-medium text-foreground mb-1.5 block">
                   {lang === "ar" ? "ملاحظات (اختياري)" : "Notes (optional)"}
                 </label>
                 <textarea
+                  id="checkout-notes"
                   placeholder={lang === "ar" ? "أي ملاحظات إضافية..." : "Any additional notes..."}
                   value={form.notes}
                   onChange={(e) => setForm({ ...form, notes: e.target.value })}
