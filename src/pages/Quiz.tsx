@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, Gift, ArrowRight, ArrowLeft, Check, Copy } from "lucide-react";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
+import SEO from "@/components/SEO";
 
 interface Question {
   ar: string;
@@ -186,6 +187,11 @@ const Quiz = () => {
 
   return (
     <div className="min-h-screen pt-20 pb-12 bg-gradient-to-b from-background via-background to-card/50">
+      <SEO
+        title={lang === "ar" ? "اختبار العطر الشخصي | روح" : "Perfume Personality Quiz | Rouh"}
+        description={lang === "ar" ? "أجب على 5 أسئلة واكتشف العطر الذي يناسب شخصيتك واحصل على خصم 10%." : "Answer 5 questions to discover the perfume that matches your personality and earn a 10% discount."}
+        path="/quiz"
+      />
       <div className="container mx-auto px-4 max-w-2xl">
         {/* Progress bar */}
         {step > 0 && step <= 6 && (
