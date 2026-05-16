@@ -3,6 +3,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useCart } from "@/contexts/CartContext";
 import { Minus, Plus, Trash2, ShoppingBag } from "lucide-react";
 import { motion } from "framer-motion";
+import SEO from "@/components/SEO";
 
 const Cart = () => {
   const { t, lang } = useLanguage();
@@ -28,6 +29,11 @@ const Cart = () => {
 
   return (
     <div className="min-h-screen pt-20 lg:pt-24">
+      <SEO
+        title={lang === "ar" ? "سلة التسوق | روح" : "Shopping Cart | Rouh"}
+        description={lang === "ar" ? "راجع منتجاتك في السلة وأتمم طلبك من عطور روح." : "Review your cart items and complete your Rouh perfumes order."}
+        path="/cart"
+      />
       <div className="container mx-auto px-4 lg:px-8 py-8">
         <h1 className="text-3xl font-bold text-gradient-gold mb-8">{t("cart")}</h1>
 
@@ -54,12 +60,17 @@ const Cart = () => {
                   <p className="text-gold font-bold mt-1">{formatPrice(item.price)} SYP</p>
                 </div>
                 <div className="flex flex-col items-end gap-2">
-                  <button onClick={() => removeItem(item.id)} className="text-destructive hover:opacity-70">
+                  <button
+                    onClick={() => removeItem(item.id)}
+                    aria-label={lang === "ar" ? "حذف المنتج" : "Remove item"}
+                    className="text-destructive hover:opacity-70"
+                  >
                     <Trash2 size={16} />
                   </button>
                   <div className="flex items-center gap-2 border border-border rounded-lg">
                     <button
                       onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                      aria-label={lang === "ar" ? "إنقاص الكمية" : "Decrease quantity"}
                       className="p-1.5 text-foreground hover:text-gold"
                     >
                       <Minus size={14} />
@@ -67,6 +78,7 @@ const Cart = () => {
                     <span className="text-sm font-medium text-foreground w-6 text-center">{item.quantity}</span>
                     <button
                       onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                      aria-label={lang === "ar" ? "زيادة الكمية" : "Increase quantity"}
                       className="p-1.5 text-foreground hover:text-gold"
                     >
                       <Plus size={14} />
@@ -79,7 +91,7 @@ const Cart = () => {
 
           {/* Summary */}
           <div className="bg-card p-6 rounded-xl border border-border h-fit">
-            <h3 className="text-lg font-bold text-foreground mb-4">{t("orderSummary")}</h3>
+            <h2 className="text-lg font-bold text-foreground mb-4">{t("orderSummary")}</h2>
             <div className="flex justify-between text-sm mb-2">
               <span className="text-muted-foreground">{t("subtotal")}</span>
               <span className="text-foreground">{formatPrice(totalPrice)} SYP</span>

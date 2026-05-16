@@ -3,6 +3,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { Phone, Mail, MapPin, Send } from "lucide-react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
+import SEO from "@/components/SEO";
 
 const Contact = () => {
   const { t, lang } = useLanguage();
@@ -22,6 +23,11 @@ const Contact = () => {
 
   return (
     <div className="min-h-screen pt-20 lg:pt-24">
+      <SEO
+        title={lang === "ar" ? "تواصل معنا | روح" : "Contact Us | Rouh"}
+        description={lang === "ar" ? "تواصل مع فريق روح للدعم والاستفسارات حول العطور والطلبات." : "Get in touch with the Rouh team for support and inquiries about perfumes and orders."}
+        path="/contact"
+      />
       <div className="container mx-auto px-4 lg:px-8 py-16">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -79,26 +85,38 @@ const Contact = () => {
             onSubmit={handleSubmit}
             className="space-y-5 bg-card rounded-2xl border border-border/50 p-8"
           >
-            <input
-              type="text"
-              placeholder={t("name")}
-              value={form.name}
-              onChange={(e) => setForm({ ...form, name: e.target.value })}
-              className={inputClass}
-            />
-            <input
-              type="email"
-              placeholder={t("email")}
-              value={form.email}
-              onChange={(e) => setForm({ ...form, email: e.target.value })}
-              className={inputClass}
-            />
-            <textarea
-              placeholder={t("message")}
-              value={form.message}
-              onChange={(e) => setForm({ ...form, message: e.target.value })}
-              className={`${inputClass} h-36 resize-none`}
-            />
+            <div>
+              <label htmlFor="contact-name" className="sr-only">{t("name")}</label>
+              <input
+                id="contact-name"
+                type="text"
+                placeholder={t("name")}
+                value={form.name}
+                onChange={(e) => setForm({ ...form, name: e.target.value })}
+                className={inputClass}
+              />
+            </div>
+            <div>
+              <label htmlFor="contact-email" className="sr-only">{t("email")}</label>
+              <input
+                id="contact-email"
+                type="email"
+                placeholder={t("email")}
+                value={form.email}
+                onChange={(e) => setForm({ ...form, email: e.target.value })}
+                className={inputClass}
+              />
+            </div>
+            <div>
+              <label htmlFor="contact-message" className="sr-only">{t("message")}</label>
+              <textarea
+                id="contact-message"
+                placeholder={t("message")}
+                value={form.message}
+                onChange={(e) => setForm({ ...form, message: e.target.value })}
+                className={`${inputClass} h-36 resize-none`}
+              />
+            </div>
             <button
               type="submit"
               className="w-full flex items-center justify-center gap-2 bg-gradient-gold text-accent-foreground py-4 rounded-xl font-semibold shadow-gold hover:shadow-gold-lg transition-all duration-300 text-lg"

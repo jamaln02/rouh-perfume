@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useProducts } from "@/hooks/useProducts";
 import ProductCard from "@/components/ProductCard";
+import SEO from "@/components/SEO";
 import heroImage from "@/assets/hero-perfume.jpg";
 import { motion } from "framer-motion";
 import { Truck, Shield, Headphones, ArrowRight, Sparkles, Star, Gift } from "lucide-react";
@@ -24,6 +25,13 @@ const Index = () => {
 
   return (
     <div className="min-h-screen">
+      <SEO
+        title={lang === "ar" ? "روح | Rouh - عطور فاخرة سورية أصلية" : "Rouh | روح - Syrian Luxury Perfumes"}
+        description={lang === "ar"
+          ? "اكتشف مجموعة روح الفاخرة من العطور الشرقية والغربية الأصلية. توصيل لكل سوريا ودفع عند الاستلام."
+          : "Discover Rouh's curated collection of authentic oriental and western luxury perfumes. Delivery across Syria with cash on delivery."}
+        path="/"
+      />
       {/* Hero */}
       <section className="relative h-screen flex items-center overflow-hidden">
         <motion.img
@@ -35,6 +43,7 @@ const Index = () => {
           className="absolute inset-0 w-full h-full object-cover"
           width={1920}
           height={1080}
+          fetchPriority="high"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-foreground/85 via-foreground/60 to-foreground/20" />
         <div className="absolute inset-0 bg-gradient-to-t from-foreground/40 to-transparent" />
@@ -330,6 +339,7 @@ const Index = () => {
                 <input
                   type="email"
                   placeholder={lang === "ar" ? "بريدك الإلكتروني" : "Your email"}
+                  aria-label={lang === "ar" ? "البريد الإلكتروني للاشتراك" : "Email for newsletter subscription"}
                   className="flex-1 bg-cream/10 border border-cream/20 text-cream px-5 py-3 rounded-full outline-none focus:ring-2 focus:ring-gold placeholder:text-cream/40"
                 />
                 <button
