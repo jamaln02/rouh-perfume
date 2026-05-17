@@ -81,20 +81,9 @@ const Checkout = () => {
       const { error: itemsError } = await supabase.from("order_items").insert(orderItems);
       if (itemsError) throw itemsError;
 
-      // Build WhatsApp message link
-      const orderItemsText = items
-        .map((i) => `${lang === "ar" ? i.nameAr : i.name} (${i.size}) x${i.quantity}`)
-        .join("\n");
-      const msg = encodeURIComponent(
-        `${lang === "ar" ? "🛒 طلب جديد" : "🛒 New Order"}\n\n${orderItemsText}\n\n💰 ${t("total")}: ${formatPrice(grandTotal)} SYP\n👤 ${form.name}\n📱 ${form.phone}\n🏙️ ${lang === "ar" ? city.ar : city.en}\n📍 ${form.address}${form.notes ? `\n📝 ${form.notes}` : ""}`
-      );
-      const whatsappUrl = `https://wa.me/963933898625?text=${msg}`;
-
       clearCart();
       toast.success(lang === "ar" ? "تم إرسال طلبك بنجاح! 🎉" : "Order placed successfully! 🎉");
-      
-      // Use location.href for WhatsApp redirect (avoids popup blocker)
-      window.location.href = whatsappUrl;
+      navigate(`/order-success/${orderId}`);
     } catch (err) {
       console.error(err);
       toast.error(lang === "ar" ? "حدث خطأ، حاول مرة أخرى" : "An error occurred, please try again");
