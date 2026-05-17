@@ -1,6 +1,9 @@
-import { Navigate, Outlet, useLocation, Link } from "react-router-dom";
+import { useEffect } from "react";
+import { Navigate, Outlet, useLocation, Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 import {
   Sidebar,
   SidebarContent,
@@ -20,6 +23,53 @@ const AdminLayout = () => {
   const { user, loading, isAdmin, signOut } = useAuth();
   const { lang } = useLanguage();
   const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isAdmin) return;
+    const channel = supabase
+      .channel("admin-new-orders")
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "orders" },
+        (payload) => {
+          const o = payload.new as { id: string; customer_name: string; total: number };
+          // Play subtle notification sound
+          try {
+            const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.frequency.value = 880;
+            gain.gain.setValueAtTime(0.0001, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.2, ctx.currentTime + 0.01);
+            gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.4);
+            osc.start();
+            osc.stop(ctx.currentTime + 0.4);
+          } catch (_) { /* ignore */ }
+
+          toast.success(
+            lang === "ar"
+              ? `🛒 طلب جديد من ${o.customer_name}`
+              : `🛒 New order from ${o.customer_name}`,
+            {
+              description: `${o.total.toLocaleString()} SYP`,
+              duration: 8000,
+              action: {
+                label: lang === "ar" ? "عرض" : "View",
+                onClick: () => navigate("/admin/orders"),
+              },
+            }
+          );
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [isAdmin, lang, navigate]);
 
   if (loading) return <div className="min-h-screen flex items-center justify-center"><div className="animate-spin h-8 w-8 border-2 border-primary border-t-transparent rounded-full" /></div>;
   if (!user) return <Navigate to="/auth" replace />;
