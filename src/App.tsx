@@ -23,6 +23,7 @@ import AdminCategories from "./pages/admin/AdminCategories";
 import AdminOrders from "./pages/admin/AdminOrders";
 import AdminUsers from "./pages/admin/AdminUsers";
 import Quiz from "./pages/Quiz";
+import OrderSuccess from "./pages/OrderSuccess";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -61,6 +62,7 @@ const App = () => (
                         <Route path="/cart" element={<Cart />} />
                         <Route path="/checkout" element={<Checkout />} />
                         <Route path="/quiz" element={<Quiz />} />
+                        <Route path="/order-success/:id" element={<OrderSuccess />} />
                         <Route path="*" element={<NotFound />} />
                       </Routes>
                       <Footer />
