@@ -330,8 +330,8 @@ const Checkout = () => {
 
               <p className="text-xs text-center text-muted-foreground mt-3">
                 {lang === "ar"
-                  ? "سيتم التواصل معك عبر واتساب لتأكيد الطلب"
-                  : "We'll contact you via WhatsApp to confirm your order"}
+                  ? "سيتم التواصل معك لتأكيد الطلب خلال 24 ساعة"
+                  : "We'll contact you to confirm your order within 24 hours"}
               </p>
             </div>
           </motion.div>
