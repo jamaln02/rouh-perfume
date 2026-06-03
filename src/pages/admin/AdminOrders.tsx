@@ -4,18 +4,31 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Eye } from "lucide-react";
 import { toast } from "sonner";
 
 interface Order {
   id: string;
   customer_name: string;
   customer_phone: string;
+  customer_address: string;
   city: string;
   status: string;
   total: number;
   shipping_cost: number;
   payment_method: string;
+  notes: string | null;
   created_at: string;
+}
+
+interface OrderItem {
+  id: string;
+  product_name: string;
+  quantity: number;
+  size: string | null;
+  price: number;
 }
 
 const statusColors: Record<string, string> = {
@@ -30,6 +43,9 @@ const AdminOrders = () => {
   const { lang } = useLanguage();
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selected, setSelected] = useState<Order | null>(null);
+  const [items, setItems] = useState<OrderItem[]>([]);
+  const [itemsLoading, setItemsLoading] = useState(false);
 
   const fetchOrders = async () => {
     const { data } = await supabase.from("orders").select("*").order("created_at", { ascending: false });
@@ -38,6 +54,17 @@ const AdminOrders = () => {
   };
 
   useEffect(() => { fetchOrders(); }, []);
+
+  const openDetails = async (order: Order) => {
+    setSelected(order);
+    setItemsLoading(true);
+    const { data } = await supabase
+      .from("order_items")
+      .select("*")
+      .eq("order_id", order.id);
+    setItems((data as OrderItem[]) || []);
+    setItemsLoading(false);
+  };
 
   const updateStatus = async (id: string, status: string) => {
     const { error } = await supabase.from("orders").update({ status }).eq("id", id);
@@ -72,6 +99,7 @@ const AdminOrders = () => {
               <TableHead>{lang === "ar" ? "المجموع" : "Total"}</TableHead>
               <TableHead>{lang === "ar" ? "الحالة" : "Status"}</TableHead>
               <TableHead>{lang === "ar" ? "التاريخ" : "Date"}</TableHead>
+              <TableHead>{lang === "ar" ? "التفاصيل" : "Details"}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -92,12 +120,77 @@ const AdminOrders = () => {
                   </Select>
                 </TableCell>
                 <TableCell className="text-muted-foreground text-sm">{new Date(o.created_at).toLocaleDateString()}</TableCell>
+                <TableCell>
+                  <Button size="sm" variant="outline" onClick={() => openDetails(o)}>
+                    <Eye className="h-4 w-4 mr-1" />
+                    {lang === "ar" ? "عرض" : "View"}
+                  </Button>
+                </TableCell>
               </TableRow>
             ))}
-            {orders.length === 0 && <TableRow><TableCell colSpan={6} className="text-center py-8 text-muted-foreground">{lang === "ar" ? "لا توجد طلبات" : "No orders"}</TableCell></TableRow>}
+            {orders.length === 0 && <TableRow><TableCell colSpan={7} className="text-center py-8 text-muted-foreground">{lang === "ar" ? "لا توجد طلبات" : "No orders"}</TableCell></TableRow>}
           </TableBody>
         </Table>
       </div>
+
+      <Dialog open={!!selected} onOpenChange={(o) => !o && setSelected(null)}>
+        <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>{lang === "ar" ? "تفاصيل الطلب" : "Order Details"}</DialogTitle>
+          </DialogHeader>
+          {selected && (
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div><span className="text-muted-foreground">{lang === "ar" ? "رقم الطلب:" : "Order ID:"}</span> <span className="font-mono">{selected.id.slice(0, 8)}</span></div>
+                <div><span className="text-muted-foreground">{lang === "ar" ? "التاريخ:" : "Date:"}</span> {new Date(selected.created_at).toLocaleString()}</div>
+                <div><span className="text-muted-foreground">{lang === "ar" ? "العميل:" : "Customer:"}</span> {selected.customer_name}</div>
+                <div><span className="text-muted-foreground">{lang === "ar" ? "الهاتف:" : "Phone:"}</span> {selected.customer_phone}</div>
+                <div><span className="text-muted-foreground">{lang === "ar" ? "المدينة:" : "City:"}</span> {selected.city}</div>
+                <div><span className="text-muted-foreground">{lang === "ar" ? "الدفع:" : "Payment:"}</span> {selected.payment_method}</div>
+                <div className="col-span-2"><span className="text-muted-foreground">{lang === "ar" ? "العنوان:" : "Address:"}</span> {selected.customer_address}</div>
+                {selected.notes && <div className="col-span-2"><span className="text-muted-foreground">{lang === "ar" ? "ملاحظات:" : "Notes:"}</span> {selected.notes}</div>}
+              </div>
+
+              <div>
+                <h3 className="font-semibold mb-2">{lang === "ar" ? "المنتجات" : "Items"}</h3>
+                {itemsLoading ? (
+                  <div className="text-sm text-muted-foreground">{lang === "ar" ? "جاري التحميل..." : "Loading..."}</div>
+                ) : (
+                  <div className="border rounded-lg overflow-hidden">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>{lang === "ar" ? "المنتج" : "Product"}</TableHead>
+                          <TableHead>{lang === "ar" ? "الحجم" : "Size"}</TableHead>
+                          <TableHead>{lang === "ar" ? "الكمية" : "Qty"}</TableHead>
+                          <TableHead>{lang === "ar" ? "السعر" : "Price"}</TableHead>
+                          <TableHead>{lang === "ar" ? "الإجمالي" : "Subtotal"}</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {items.map((it) => (
+                          <TableRow key={it.id}>
+                            <TableCell className="font-medium">{it.product_name}</TableCell>
+                            <TableCell>{it.size || "-"}</TableCell>
+                            <TableCell>{it.quantity}</TableCell>
+                            <TableCell>{Number(it.price).toLocaleString()} SYP</TableCell>
+                            <TableCell>{(Number(it.price) * it.quantity).toLocaleString()} SYP</TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                )}
+              </div>
+
+              <div className="border-t pt-4 space-y-1 text-sm">
+                <div className="flex justify-between"><span className="text-muted-foreground">{lang === "ar" ? "الشحن:" : "Shipping:"}</span> <span>{Number(selected.shipping_cost).toLocaleString()} SYP</span></div>
+                <div className="flex justify-between font-bold text-base"><span>{lang === "ar" ? "المجموع:" : "Total:"}</span> <span>{Number(selected.total).toLocaleString()} SYP</span></div>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
