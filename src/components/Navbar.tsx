@@ -5,7 +5,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useCart } from "@/contexts/CartContext";
 import { useAuth } from "@/hooks/useAuth";
 import { motion, AnimatePresence } from "framer-motion";
-import rouhLogo from "@/assets/rouh-logo.jpg.asset.json";
+import rouhLogo from "@/assets/rouh-logo-transparent.png.asset.json";
 
 const Navbar = () => {
   const { t, lang, setLang } = useLanguage();
@@ -70,7 +70,7 @@ const Navbar = () => {
             <img
               src={rouhLogo.url}
               alt={t("brand")}
-              className="h-12 lg:h-16 w-auto object-contain mix-blend-multiply dark:mix-blend-lighten drop-shadow-[0_2px_8px_rgba(201,168,76,0.35)]"
+              className="h-12 lg:h-16 w-auto object-contain drop-shadow-[0_2px_8px_rgba(201,168,76,0.4)]"
             />
           </Link>
 
