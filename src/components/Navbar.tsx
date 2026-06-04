@@ -5,6 +5,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useCart } from "@/contexts/CartContext";
 import { useAuth } from "@/hooks/useAuth";
 import { motion, AnimatePresence } from "framer-motion";
+import rouhLogo from "@/assets/rouh-logo.jpg.asset.json";
 
 const Navbar = () => {
   const { t, lang, setLang } = useLanguage();
@@ -66,6 +67,11 @@ const Navbar = () => {
 
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2">
+            <img
+              src={rouhLogo.url}
+              alt="Rouh"
+              className="h-9 lg:h-11 w-auto object-contain drop-shadow-[0_2px_8px_rgba(201,168,76,0.35)]"
+            />
             <span className="text-2xl lg:text-3xl font-bold text-gradient-gold font-display tracking-wider">
               {t("brand")}
             </span>
