@@ -66,15 +66,12 @@ const Navbar = () => {
           </button>
 
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2">
+          <Link to="/" className="flex items-center" aria-label={t("brand")}>
             <img
               src={rouhLogo.url}
-              alt="Rouh"
-              className="h-9 lg:h-11 w-auto object-contain drop-shadow-[0_2px_8px_rgba(201,168,76,0.35)]"
+              alt={t("brand")}
+              className="h-12 lg:h-16 w-auto object-contain mix-blend-multiply dark:mix-blend-lighten drop-shadow-[0_2px_8px_rgba(201,168,76,0.35)]"
             />
-            <span className="text-2xl lg:text-3xl font-bold text-gradient-gold font-display tracking-wider">
-              {t("brand")}
-            </span>
           </Link>
 
           {/* Desktop links */}
