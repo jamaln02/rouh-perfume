@@ -11,8 +11,8 @@ const Index = () => {
   const { t, lang } = useLanguage();
   const { products, loading } = useProducts();
 
-  const featured = products.filter((p) => p.featured);
-  const bestSellers = products.filter((p) => p.bestSeller);
+  const featured = products.filter((p) => p.featured).slice(0, 5);
+  const bestSellers = products.filter((p) => p.bestSeller).slice(0, 5);
 
   const fadeUp = {
     hidden: { opacity: 0, y: 30 },
@@ -159,15 +159,9 @@ const Index = () => {
           </motion.div>
           {loading ? (
             <div className="flex justify-center py-12"><div className="animate-spin h-8 w-8 border-2 border-primary border-t-transparent rounded-full" /></div>
-          ) : featured.length > 0 ? (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 lg:gap-8">
-              {featured.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
           ) : (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 lg:gap-8">
-              {products.slice(0, 4).map((product) => (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 lg:gap-6">
+              {(featured.length > 0 ? featured : products.slice(0, 5)).map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
             </div>
@@ -235,8 +229,8 @@ const Index = () => {
           {loading ? (
             <div className="flex justify-center py-12"><div className="animate-spin h-8 w-8 border-2 border-primary border-t-transparent rounded-full" /></div>
           ) : (
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-6 lg:gap-8">
-              {(bestSellers.length > 0 ? bestSellers : products.slice(0, 3)).map((product) => (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 lg:gap-6">
+              {(bestSellers.length > 0 ? bestSellers : products.slice(0, 5)).map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
             </div>
