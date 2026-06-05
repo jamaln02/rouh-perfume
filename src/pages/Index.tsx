@@ -196,7 +196,7 @@ const Index = () => {
             <div className="bg-gold/20 border border-gold/30 rounded-xl px-5 py-3 inline-flex items-center gap-2 mb-8">
               <Gift size={18} className="text-gold" />
               <span className="text-gold font-bold text-sm">
-                {lang === "ar" ? "واحصل على خصم 10% كمكافأة!" : "And get 10% off as a reward!"}
+                {lang === "ar" ? "واحصل على خصم 10% ك مكافئة!" : "And get 10% off as a reward!"}
               </span>
             </div>
             <div>
