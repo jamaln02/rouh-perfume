@@ -235,7 +235,7 @@ const Quiz = () => {
                 <div className="flex items-center gap-2 text-gold">
                   <Gift size={20} />
                   <span className="font-bold">
-                    {lang === "ar" ? "احصل على خصم 10% كمكافأة!" : "Get 10% off as a reward!"}
+                    {lang === "ar" ? "واحصل على خصم 10% ك مكافئة!" : "And get 10% off as a reward!"}
                   </span>
                 </div>
               </div>
