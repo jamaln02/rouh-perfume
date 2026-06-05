@@ -69,9 +69,9 @@ const Footer = () => {
                 <Phone size={16} className="text-gold shrink-0" />
                 <span dir="ltr">+963 933 898 625</span>
               </a>
-              <a href="mailto:info@rouh.sy" className="flex items-center gap-3 hover:text-gold transition-colors">
+              <a href="mailto:contact@rouh.shop" className="flex items-center gap-3 hover:text-gold transition-colors">
                 <Mail size={16} className="text-gold shrink-0" />
-                <span>info@rouh.sy</span>
+                <span>contact@rouh.shop</span>
               </a>
               <a href="https://maps.google.com/?q=Damascus,Syria" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 hover:text-gold transition-colors">
                 <MapPin size={16} className="text-gold shrink-0" />
