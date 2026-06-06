@@ -4,6 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { CartProvider } from "@/contexts/CartContext";
+import { WishlistProvider } from "@/contexts/WishlistContext";
 import { AuthProvider } from "@/hooks/useAuth";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -24,6 +25,7 @@ import AdminOrders from "./pages/admin/AdminOrders";
 import AdminUsers from "./pages/admin/AdminUsers";
 import Quiz from "./pages/Quiz";
 import OrderSuccess from "./pages/OrderSuccess";
+import Wishlist from "./pages/Wishlist";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -34,6 +36,7 @@ const App = () => (
       <LanguageProvider>
         <AuthProvider>
           <CartProvider>
+            <WishlistProvider>
             <Sonner />
             <BrowserRouter>
               <Routes>
@@ -62,6 +65,7 @@ const App = () => (
                         <Route path="/cart" element={<Cart />} />
                         <Route path="/checkout" element={<Checkout />} />
                         <Route path="/quiz" element={<Quiz />} />
+                        <Route path="/wishlist" element={<Wishlist />} />
                         <Route path="/order-success/:id" element={<OrderSuccess />} />
                         <Route path="*" element={<NotFound />} />
                       </Routes>
@@ -72,6 +76,7 @@ const App = () => (
                 />
               </Routes>
             </BrowserRouter>
+            </WishlistProvider>
           </CartProvider>
         </AuthProvider>
       </LanguageProvider>

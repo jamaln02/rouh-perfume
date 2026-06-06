@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
-import { ShoppingBag, Eye } from "lucide-react";
+import { ShoppingBag, Eye, Heart } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCart } from "@/contexts/CartContext";
+import { useWishlist } from "@/contexts/WishlistContext";
 import { ProductView } from "@/hooks/useProducts";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
@@ -13,6 +14,8 @@ interface ProductCardProps {
 const ProductCard = ({ product }: ProductCardProps) => {
   const { lang, t } = useLanguage();
   const { addItem } = useCart();
+  const { has, toggle } = useWishlist();
+  const inWishlist = has(product.id);
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -26,6 +29,13 @@ const ProductCard = ({ product }: ProductCardProps) => {
       size: product.sizes[0],
     });
     toast.success(lang === "ar" ? "تمت الإضافة إلى السلة" : "Added to cart");
+  };
+
+  const handleToggleWishlist = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toggle(product.id);
+    toast.success(inWishlist ? t("removedFromWishlist") : t("addedToWishlist"));
   };
 
   const formatPrice = (price: number) =>
@@ -64,6 +74,19 @@ const ProductCard = ({ product }: ProductCardProps) => {
                 </span>
               )}
             </div>
+
+            {/* Wishlist heart */}
+            <button
+              onClick={handleToggleWishlist}
+              aria-label={inWishlist ? t("removeFromWishlist") : t("addToWishlist")}
+              className={`absolute top-3 end-3 p-2 rounded-full backdrop-blur transition-all duration-300 ${
+                inWishlist
+                  ? "bg-gold text-accent-foreground shadow-gold"
+                  : "bg-card/80 text-foreground hover:bg-gold hover:text-accent-foreground"
+              }`}
+            >
+              <Heart size={16} className={inWishlist ? "fill-current" : ""} />
+            </button>
 
             {/* Hover actions */}
             <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-3 opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500">

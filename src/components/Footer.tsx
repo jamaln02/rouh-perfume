@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Phone, Mail, MapPin, MessageCircle } from "lucide-react";
+import { Phone, Mail, MapPin, MessageCircle, Instagram, Facebook, Twitter } from "lucide-react";
 
 const Footer = () => {
   const { t, lang } = useLanguage();
@@ -24,6 +24,48 @@ const Footer = () => {
               <MessageCircle size={16} />
               {lang === "ar" ? "تواصل عبر واتساب" : "Chat on WhatsApp"}
             </a>
+
+            <div className="mt-6">
+              <p className="text-cream/60 text-xs uppercase tracking-wider mb-3">{t("followUs")}</p>
+              <div className="flex items-center gap-3">
+                <a
+                  href="https://instagram.com/rouh.perfumes"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Instagram"
+                  className="w-9 h-9 rounded-full bg-cream/5 hover:bg-gold hover:text-accent-foreground text-cream/70 flex items-center justify-center transition-colors"
+                >
+                  <Instagram size={16} />
+                </a>
+                <a
+                  href="https://facebook.com/rouh.perfumes"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Facebook"
+                  className="w-9 h-9 rounded-full bg-cream/5 hover:bg-gold hover:text-accent-foreground text-cream/70 flex items-center justify-center transition-colors"
+                >
+                  <Facebook size={16} />
+                </a>
+                <a
+                  href="https://twitter.com/rouh_perfumes"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Twitter / X"
+                  className="w-9 h-9 rounded-full bg-cream/5 hover:bg-gold hover:text-accent-foreground text-cream/70 flex items-center justify-center transition-colors"
+                >
+                  <Twitter size={16} />
+                </a>
+                <a
+                  href="https://wa.me/963933898625"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="WhatsApp"
+                  className="w-9 h-9 rounded-full bg-cream/5 hover:bg-[#25D366] hover:text-white text-cream/70 flex items-center justify-center transition-colors"
+                >
+                  <MessageCircle size={16} />
+                </a>
+              </div>
+            </div>
           </div>
 
           {/* Quick Links */}
