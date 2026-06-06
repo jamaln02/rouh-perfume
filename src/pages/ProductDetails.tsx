@@ -1,10 +1,13 @@
 import { useParams } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCart } from "@/contexts/CartContext";
+import { useWishlist } from "@/contexts/WishlistContext";
+import { useRecentlyViewed } from "@/hooks/useRecentlyViewed";
 import { useProduct, useProducts } from "@/hooks/useProducts";
 import ProductCard from "@/components/ProductCard";
-import { ShoppingBag, MessageCircle, Truck, Shield } from "lucide-react";
+import RecentlyViewed from "@/components/RecentlyViewed";
+import { ShoppingBag, MessageCircle, Truck, Shield, Heart } from "lucide-react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
@@ -13,9 +16,15 @@ const ProductDetails = () => {
   const { id } = useParams();
   const { t, lang } = useLanguage();
   const { addItem } = useCart();
+  const { has, toggle } = useWishlist();
+  const { push: pushRecent } = useRecentlyViewed();
   const { product, loading } = useProduct(id || "");
   const { products } = useProducts();
   const [selectedSize, setSelectedSize] = useState("");
+
+  useEffect(() => {
+    if (product?.id) pushRecent(product.id);
+  }, [product?.id, pushRecent]);
 
   // Set default size when product loads
   if (product && !selectedSize && product.sizes.length > 0) {
@@ -44,6 +53,7 @@ const ProductDetails = () => {
   }
 
   const currentSize = selectedSize || product.sizes[0] || "";
+  const inWishlist = has(product.id);
 
   const related = products
     .filter((p) => p.id !== product.id && (p.category === product.category || p.fragrance === product.fragrance))
@@ -166,6 +176,20 @@ const ProductDetails = () => {
                   <MessageCircle size={20} />
                   {t("buyWhatsApp")}
                 </a>
+                <button
+                  onClick={() => {
+                    toggle(product.id);
+                    toast.success(inWishlist ? t("removedFromWishlist") : t("addedToWishlist"));
+                  }}
+                  aria-label={inWishlist ? t("removeFromWishlist") : t("addToWishlist")}
+                  className={`flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-semibold border-2 transition-all duration-300 ${
+                    inWishlist
+                      ? "bg-gold border-gold text-accent-foreground shadow-gold"
+                      : "border-border text-foreground hover:border-gold hover:text-gold"
+                  }`}
+                >
+                  <Heart size={20} className={inWishlist ? "fill-current" : ""} />
+                </button>
               </div>
 
               {/* Trust badges */}
@@ -194,6 +218,8 @@ const ProductDetails = () => {
             </div>
           </section>
         )}
+
+        <RecentlyViewed excludeId={product.id} />
       </div>
     </div>
   );

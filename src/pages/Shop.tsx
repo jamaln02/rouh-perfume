@@ -2,6 +2,7 @@ import { useState, useMemo } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useProducts } from "@/hooks/useProducts";
 import ProductCard from "@/components/ProductCard";
+import ProductCardSkeleton from "@/components/ProductCardSkeleton";
 import SEO from "@/components/SEO";
 import { Search, SlidersHorizontal, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -41,14 +42,6 @@ const Shop = () => {
   const fragrances = ["all", "oud", "floral", "woody", "fresh", "oriental"];
 
   const activeFilters = (category !== "all" ? 1 : 0) + (fragrance !== "all" ? 1 : 0);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen pt-20 flex items-center justify-center">
-        <div className="animate-spin h-8 w-8 border-2 border-primary border-t-transparent rounded-full" />
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen pt-20 lg:pt-24">
@@ -162,6 +155,11 @@ const Shop = () => {
 
           {/* Products grid */}
           <div className="flex-1">
+            {loading ? (
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+                {Array.from({ length: 6 }).map((_, i) => <ProductCardSkeleton key={i} />)}
+              </div>
+            ) : (
             <AnimatePresence mode="wait">
               {filtered.length > 0 ? (
                 <motion.div
@@ -185,6 +183,7 @@ const Shop = () => {
                 </motion.div>
               )}
             </AnimatePresence>
+            )}
           </div>
         </div>
       </div>

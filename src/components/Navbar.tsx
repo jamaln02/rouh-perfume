@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { ShoppingBag, Menu, X, Globe, Search, User, Shield, ChevronDown } from "lucide-react";
+import { ShoppingBag, Menu, X, Globe, Search, User, Shield, ChevronDown, Heart } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCart } from "@/contexts/CartContext";
+import { useWishlist } from "@/contexts/WishlistContext";
 import { useAuth } from "@/hooks/useAuth";
 import { motion, AnimatePresence } from "framer-motion";
 import rouhLogo from "@/assets/rouh-logo-transparent.png.asset.json";
@@ -10,6 +11,7 @@ import rouhLogo from "@/assets/rouh-logo-transparent.png.asset.json";
 const Navbar = () => {
   const { t, lang, setLang } = useLanguage();
   const { totalItems } = useCart();
+  const { count: wishlistCount } = useWishlist();
   const { user, isAdmin, signOut } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -154,6 +156,19 @@ const Navbar = () => {
                   className="absolute -top-0.5 -right-0.5 bg-primary text-primary-foreground text-[10px] w-4.5 h-4.5 min-w-[18px] min-h-[18px] rounded-full flex items-center justify-center font-bold leading-none"
                 >
                   {totalItems}
+                </motion.span>
+              )}
+            </Link>
+
+            <Link to="/wishlist" className={`relative p-2 rounded-lg ${textColor} hover:text-primary hover:bg-primary/5 transition-all duration-200`} aria-label={t("wishlist")}>
+              <Heart size={18} />
+              {wishlistCount > 0 && (
+                <motion.span
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  className="absolute -top-0.5 -right-0.5 bg-gold text-accent-foreground text-[10px] min-w-[18px] min-h-[18px] rounded-full flex items-center justify-center font-bold leading-none"
+                >
+                  {wishlistCount}
                 </motion.span>
               )}
             </Link>

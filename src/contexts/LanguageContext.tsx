@@ -83,6 +83,12 @@ const translations: Translations = {
   signup: { ar: "إنشاء حساب", en: "Sign Up" },
   logout: { ar: "تسجيل الخروج", en: "Sign Out" },
   adminPanel: { ar: "لوحة التحكم", en: "Admin Panel" },
+  wishlist: { ar: "المفضلة", en: "Wishlist" },
+  addToWishlist: { ar: "أضف للمفضلة", en: "Add to wishlist" },
+  removeFromWishlist: { ar: "إزالة من المفضلة", en: "Remove from wishlist" },
+  addedToWishlist: { ar: "تمت الإضافة للمفضلة", en: "Added to wishlist" },
+  removedFromWishlist: { ar: "تمت الإزالة من المفضلة", en: "Removed from wishlist" },
+  recentlyViewed: { ar: "شاهدتها مؤخراً", en: "Recently Viewed" },
 };
 
 interface LanguageContextType {

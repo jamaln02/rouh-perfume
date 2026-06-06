@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useProducts } from "@/hooks/useProducts";
 import ProductCard from "@/components/ProductCard";
+import ProductCardSkeleton from "@/components/ProductCardSkeleton";
 import SEO from "@/components/SEO";
 import heroImage from "@/assets/hero-perfume.jpg";
 import { motion } from "framer-motion";
@@ -158,7 +159,9 @@ const Index = () => {
             <h2 className="font-display text-4xl md:text-5xl font-bold text-gradient-gold">{t("featured")}</h2>
           </motion.div>
           {loading ? (
-            <div className="flex justify-center py-12"><div className="animate-spin h-8 w-8 border-2 border-primary border-t-transparent rounded-full" /></div>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 lg:gap-6">
+              {Array.from({ length: 5 }).map((_, i) => <ProductCardSkeleton key={i} />)}
+            </div>
           ) : (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 lg:gap-6">
               {(featured.length > 0 ? featured : products.slice(0, 5)).map((product) => (
@@ -227,7 +230,9 @@ const Index = () => {
             <h2 className="font-display text-4xl md:text-5xl font-bold text-gradient-gold">{t("bestSellers")}</h2>
           </motion.div>
           {loading ? (
-            <div className="flex justify-center py-12"><div className="animate-spin h-8 w-8 border-2 border-primary border-t-transparent rounded-full" /></div>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 lg:gap-6">
+              {Array.from({ length: 5 }).map((_, i) => <ProductCardSkeleton key={i} />)}
+            </div>
           ) : (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 lg:gap-6">
               {(bestSellers.length > 0 ? bestSellers : products.slice(0, 5)).map((product) => (
