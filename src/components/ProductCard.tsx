@@ -6,6 +6,7 @@ import { useWishlist } from "@/contexts/WishlistContext";
 import { ProductView } from "@/hooks/useProducts";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
+import StockIndicator from "./StockIndicator";
 
 interface ProductCardProps {
   product: ProductView;
@@ -110,9 +111,12 @@ const ProductCard = ({ product }: ProductCardProps) => {
             <p className="text-xs text-muted-foreground mt-1">
               {t(product.fragrance)} · {t(product.category)}
             </p>
-            <p className="text-gold font-bold mt-2 text-lg">
-              {formatPrice(product.price)} <span className="text-xs font-normal text-muted-foreground">SYP</span>
-            </p>
+            <div className="flex items-center justify-between mt-2 gap-2">
+              <p className="text-gold font-bold text-lg">
+                {formatPrice(product.price)} <span className="text-xs font-normal text-muted-foreground">SYP</span>
+              </p>
+              {product.stock <= 5 && <StockIndicator stock={product.stock} size="sm" />}
+            </div>
           </div>
         </div>
       </Link>
