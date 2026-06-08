@@ -38,6 +38,42 @@ export type Database = {
         }
         Relationships: []
       }
+      coupons: {
+        Row: {
+          active: boolean
+          code: string
+          created_at: string
+          discount_percent: number
+          expires_at: string | null
+          id: string
+          max_uses: number | null
+          updated_at: string
+          used_count: number
+        }
+        Insert: {
+          active?: boolean
+          code: string
+          created_at?: string
+          discount_percent: number
+          expires_at?: string | null
+          id?: string
+          max_uses?: number | null
+          updated_at?: string
+          used_count?: number
+        }
+        Update: {
+          active?: boolean
+          code?: string
+          created_at?: string
+          discount_percent?: number
+          expires_at?: string | null
+          id?: string
+          max_uses?: number | null
+          updated_at?: string
+          used_count?: number
+        }
+        Relationships: []
+      }
       order_items: {
         Row: {
           created_at: string
@@ -89,10 +125,12 @@ export type Database = {
       orders: {
         Row: {
           city: string
+          coupon_code: string | null
           created_at: string
           customer_address: string
           customer_name: string
           customer_phone: string
+          discount_amount: number
           id: string
           notes: string | null
           payment_method: string | null
@@ -104,10 +142,12 @@ export type Database = {
         }
         Insert: {
           city: string
+          coupon_code?: string | null
           created_at?: string
           customer_address: string
           customer_name: string
           customer_phone: string
+          discount_amount?: number
           id?: string
           notes?: string | null
           payment_method?: string | null
@@ -119,10 +159,12 @@ export type Database = {
         }
         Update: {
           city?: string
+          coupon_code?: string | null
           created_at?: string
           customer_address?: string
           customer_name?: string
           customer_phone?: string
+          discount_amount?: number
           id?: string
           notes?: string | null
           payment_method?: string | null
@@ -255,6 +297,47 @@ export type Database = {
           used?: boolean
         }
         Relationships: []
+      }
+      reviews: {
+        Row: {
+          approved: boolean
+          comment: string | null
+          created_at: string
+          id: string
+          product_id: string
+          rating: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          approved?: boolean
+          comment?: string | null
+          created_at?: string
+          id?: string
+          product_id: string
+          rating: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          approved?: boolean
+          comment?: string | null
+          created_at?: string
+          id?: string
+          product_id?: string
+          rating?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reviews_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_roles: {
         Row: {
