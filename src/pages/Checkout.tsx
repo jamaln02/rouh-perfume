@@ -6,7 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ShieldCheck, Truck, CreditCard, MessageCircle, ChevronDown } from "lucide-react";
+import { ShieldCheck, Truck, CreditCard, MessageCircle, ChevronDown, Tag, X } from "lucide-react";
 import SEO from "@/components/SEO";
 
 const cities = [
@@ -34,12 +34,39 @@ const Checkout = () => {
   const [form, setForm] = useState({ name: "", phone: "", address: "", notes: "" });
   const [submitting, setSubmitting] = useState(false);
   const [step, setStep] = useState(1);
+  const [couponCode, setCouponCode] = useState("");
+  const [appliedCoupon, setAppliedCoupon] = useState<{ code: string; discount_percent: number; id: string } | null>(null);
+  const [validatingCoupon, setValidatingCoupon] = useState(false);
 
   const formatPrice = (price: number) =>
     new Intl.NumberFormat(lang === "ar" ? "ar-SY" : "en-SY").format(price);
 
   const shippingCost = totalPrice >= 50000 ? 0 : city.shipping;
-  const grandTotal = totalPrice + shippingCost;
+  const discountAmount = appliedCoupon ? Math.round((totalPrice * appliedCoupon.discount_percent) / 100) : 0;
+  const grandTotal = totalPrice + shippingCost - discountAmount;
+
+  const applyCoupon = async () => {
+    if (!couponCode.trim()) return;
+    setValidatingCoupon(true);
+    const code = couponCode.trim().toUpperCase();
+    const { data } = await supabase
+      .from("coupons")
+      .select("id, code, discount_percent, max_uses, used_count, expires_at, active")
+      .eq("code", code)
+      .eq("active", true)
+      .maybeSingle();
+    setValidatingCoupon(false);
+    if (
+      !data ||
+      (data.expires_at && new Date(data.expires_at) < new Date()) ||
+      (data.max_uses && data.used_count >= data.max_uses)
+    ) {
+      toast.error(t("invalidCoupon"));
+      return;
+    }
+    setAppliedCoupon({ id: data.id, code: data.code, discount_percent: data.discount_percent });
+    toast.success(t("couponApplied"));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -64,6 +91,8 @@ const Checkout = () => {
         payment_method: "cash_on_delivery",
         notes: form.notes || null,
         status: "pending",
+        coupon_code: appliedCoupon?.code || null,
+        discount_amount: discountAmount,
       });
 
       if (orderError) throw orderError;
@@ -80,6 +109,12 @@ const Checkout = () => {
 
       const { error: itemsError } = await supabase.from("order_items").insert(orderItems);
       if (itemsError) throw itemsError;
+
+      // Increment coupon usage
+      if (appliedCoupon) {
+        await supabase.rpc as any;
+        await supabase.from("coupons").update({ used_count: (await supabase.from("coupons").select("used_count").eq("id", appliedCoupon.id).single()).data?.used_count + 1 || 1 }).eq("id", appliedCoupon.id);
+      }
 
       clearCart();
       toast.success(lang === "ar" ? "تم إرسال طلبك بنجاح! 🎉" : "Order placed successfully! 🎉");
