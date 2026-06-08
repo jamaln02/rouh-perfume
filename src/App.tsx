@@ -26,6 +26,9 @@ import AdminUsers from "./pages/admin/AdminUsers";
 import Quiz from "./pages/Quiz";
 import OrderSuccess from "./pages/OrderSuccess";
 import Wishlist from "./pages/Wishlist";
+import TrackOrder from "./pages/TrackOrder";
+import AdminReviews from "./pages/admin/AdminReviews";
+import AdminCoupons from "./pages/admin/AdminCoupons";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -47,6 +50,8 @@ const App = () => (
                   <Route path="categories" element={<AdminCategories />} />
                   <Route path="orders" element={<AdminOrders />} />
                   <Route path="users" element={<AdminUsers />} />
+                  <Route path="reviews" element={<AdminReviews />} />
+                  <Route path="coupons" element={<AdminCoupons />} />
                 </Route>
 
                 {/* Public routes */}
@@ -66,6 +71,7 @@ const App = () => (
                         <Route path="/checkout" element={<Checkout />} />
                         <Route path="/quiz" element={<Quiz />} />
                         <Route path="/wishlist" element={<Wishlist />} />
+                        <Route path="/track" element={<TrackOrder />} />
                         <Route path="/order-success/:id" element={<OrderSuccess />} />
                         <Route path="*" element={<NotFound />} />
                       </Routes>
