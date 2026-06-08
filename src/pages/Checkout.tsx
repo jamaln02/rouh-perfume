@@ -347,6 +347,14 @@ const Checkout = () => {
                     {shippingCost === 0 ? (lang === "ar" ? "مجاني ✓" : "Free ✓") : `${formatPrice(shippingCost)} SYP`}
                   </span>
                 </div>
+                {appliedCoupon && (
+                  <div className="flex justify-between text-sm">
+                    <span className="text-green-500 font-medium">
+                      {t("discount")} ({appliedCoupon.code} -{appliedCoupon.discount_percent}%)
+                    </span>
+                    <span className="text-green-500 font-medium">-{formatPrice(discountAmount)} SYP</span>
+                  </div>
+                )}
                 {totalPrice < 50000 && (
                   <p className="text-xs text-primary">
                     {lang === "ar"
@@ -354,6 +362,42 @@ const Checkout = () => {
                       : `Add ${formatPrice(50000 - totalPrice)} SYP for free shipping`}
                   </p>
                 )}
+
+                {/* Coupon input */}
+                <div className="pt-2">
+                  {appliedCoupon ? (
+                    <button
+                      type="button"
+                      onClick={() => { setAppliedCoupon(null); setCouponCode(""); }}
+                      className="w-full text-xs text-muted-foreground hover:text-destructive flex items-center justify-center gap-1"
+                    >
+                      <X size={12} /> {t("removeCoupon")} {appliedCoupon.code}
+                    </button>
+                  ) : (
+                    <div className="flex gap-2">
+                      <div className="relative flex-1">
+                        <Tag size={14} className="absolute start-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                        <input
+                          type="text"
+                          placeholder={t("couponCode")}
+                          value={couponCode}
+                          onChange={(e) => setCouponCode(e.target.value)}
+                          className="w-full bg-background border border-border rounded-lg ps-9 pe-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary/40 uppercase"
+                          dir="ltr"
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        disabled={validatingCoupon || !couponCode.trim()}
+                        onClick={applyCoupon}
+                        className="bg-secondary text-secondary-foreground px-4 rounded-lg text-sm font-semibold hover:bg-secondary/80 disabled:opacity-50"
+                      >
+                        {t("applyCoupon")}
+                      </button>
+                    </div>
+                  )}
+                </div>
+
                 <div className="flex justify-between font-bold text-lg pt-3 border-t border-border">
                   <span className="text-foreground">{t("total")}</span>
                   <span className="text-primary">{formatPrice(grandTotal)} SYP</span>
