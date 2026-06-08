@@ -16,7 +16,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { LayoutDashboard, Package, FolderTree, ShoppingCart, Users, LogOut, Home } from "lucide-react";
+import { LayoutDashboard, Package, FolderTree, ShoppingCart, Users, LogOut, Home, Star, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const AdminLayout = () => {
@@ -81,6 +81,8 @@ const AdminLayout = () => {
     categories: lang === "ar" ? "التصنيفات" : "Categories",
     orders: lang === "ar" ? "الطلبات" : "Orders",
     users: lang === "ar" ? "المستخدمون" : "Users",
+    reviews: lang === "ar" ? "التقييمات" : "Reviews",
+    coupons: lang === "ar" ? "الكوبونات" : "Coupons",
     admin: lang === "ar" ? "إدارة روح" : "Rouh Admin",
     backToSite: lang === "ar" ? "العودة للموقع" : "Back to Site",
     logout: lang === "ar" ? "تسجيل الخروج" : "Sign Out",
@@ -92,6 +94,8 @@ const AdminLayout = () => {
     { title: t.categories, url: "/admin/categories", icon: FolderTree },
     { title: t.orders, url: "/admin/orders", icon: ShoppingCart },
     { title: t.users, url: "/admin/users", icon: Users },
+    { title: t.reviews, url: "/admin/reviews", icon: Star },
+    { title: t.coupons, url: "/admin/coupons", icon: Tag },
   ];
 
   const isActive = (url: string) => location.pathname === url;
