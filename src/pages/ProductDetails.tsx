@@ -7,6 +7,8 @@ import { useRecentlyViewed } from "@/hooks/useRecentlyViewed";
 import { useProduct, useProducts } from "@/hooks/useProducts";
 import ProductCard from "@/components/ProductCard";
 import RecentlyViewed from "@/components/RecentlyViewed";
+import Reviews from "@/components/Reviews";
+import StockIndicator from "@/components/StockIndicator";
 import { ShoppingBag, MessageCircle, Truck, Shield, Heart } from "lucide-react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
@@ -132,6 +134,7 @@ const ProductDetails = () => {
               <p className="text-3xl font-bold text-gold mb-6">
                 {formatPrice(product.price)} <span className="text-base font-normal text-muted-foreground">SYP</span>
               </p>
+              <div className="mb-6"><StockIndicator stock={product.stock} /></div>
               <p className="text-muted-foreground leading-relaxed mb-8 text-lg">
                 {lang === "ar" ? product.descriptionAr : product.description}
               </p>
@@ -220,6 +223,7 @@ const ProductDetails = () => {
         )}
 
         <RecentlyViewed excludeId={product.id} />
+        <Reviews productId={product.id} />
       </div>
     </div>
   );

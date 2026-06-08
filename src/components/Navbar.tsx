@@ -34,6 +34,7 @@ const Navbar = () => {
     { to: "/", label: t("home") },
     { to: "/shop", label: t("shop") },
     { to: "/quiz", label: lang === "ar" ? "اختبار العطر" : "Perfume Quiz" },
+    { to: "/track", label: t("trackOrder") },
     { to: "/about", label: t("about") },
     { to: "/contact", label: t("contact") },
   ];
