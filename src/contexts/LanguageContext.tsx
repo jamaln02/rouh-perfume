@@ -128,7 +128,6 @@ const translations: Translations = {
   noSales: { ar: "لا مبيعات بعد", en: "No sales yet" },
   filterByStatus: { ar: "تصفية بالحالة", en: "Filter by status" },
   all: { ar: "الكل", en: "All" },
-  search: { ar: "بحث...", en: "Search..." },
   units: { ar: "وحدة", en: "units" },
 };
 
