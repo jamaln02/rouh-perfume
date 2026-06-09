@@ -116,6 +116,19 @@ const translations: Translations = {
   invalidCoupon: { ar: "كود غير صالح أو منتهي", en: "Invalid or expired coupon" },
   discount: { ar: "الخصم", en: "Discount" },
   removeCoupon: { ar: "إزالة", en: "Remove" },
+  // Phase 3 — analytics & admin
+  totalRevenue: { ar: "إجمالي المبيعات", en: "Total Revenue" },
+  avgOrder: { ar: "متوسط الطلب", en: "Avg Order" },
+  last30Days: { ar: "آخر ٣٠ يوم", en: "Last 30 days" },
+  salesChart: { ar: "المبيعات اليومية", en: "Daily Sales" },
+  topProducts: { ar: "أكثر المنتجات مبيعاً", en: "Top Products" },
+  lowStockAlert: { ar: "تنبيه: مخزون منخفض", en: "Low Stock Alert" },
+  exportCsv: { ar: "تصدير Excel", en: "Export CSV" },
+  printInvoice: { ar: "طباعة الفاتورة", en: "Print Invoice" },
+  noSales: { ar: "لا مبيعات بعد", en: "No sales yet" },
+  filterByStatus: { ar: "تصفية بالحالة", en: "Filter by status" },
+  all: { ar: "الكل", en: "All" },
+  units: { ar: "وحدة", en: "units" },
 };
 
 interface LanguageContextType {

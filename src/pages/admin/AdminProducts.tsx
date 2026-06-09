@@ -9,7 +9,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
-import { Plus, Pencil, Trash2 } from "lucide-react";
+import { Plus, Pencil, Trash2, Search, AlertTriangle } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 interface Product {
   id: string;
@@ -48,6 +49,7 @@ const AdminProducts = () => {
   const [editing, setEditing] = useState<Product | null>(null);
   const [form, setForm] = useState(emptyProduct);
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
 
   const fetchData = async () => {
     const [p, c] = await Promise.all([
@@ -115,6 +117,12 @@ const AdminProducts = () => {
 
   if (loading) return <div className="flex justify-center p-8"><div className="animate-spin h-8 w-8 border-2 border-primary border-t-transparent rounded-full" /></div>;
 
+  const filtered = products.filter((p) => {
+    if (!search) return true;
+    const q = search.toLowerCase();
+    return p.name.toLowerCase().includes(q) || p.name_ar.toLowerCase().includes(q);
+  });
+
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
@@ -168,6 +176,16 @@ const AdminProducts = () => {
         </Dialog>
       </div>
 
+      <div className="relative max-w-md mb-4">
+        <Search className="absolute start-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+        <Input
+          placeholder={lang === "ar" ? "بحث عن منتج..." : "Search products..."}
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="ps-9"
+        />
+      </div>
+
       <div className="border rounded-lg overflow-hidden">
         <Table>
           <TableHeader>
@@ -180,11 +198,19 @@ const AdminProducts = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {products.map((p) => (
+            {filtered.map((p) => (
               <TableRow key={p.id}>
                 <TableCell className="font-medium">{lang === "ar" ? p.name_ar : p.name}</TableCell>
                 <TableCell>{p.price.toLocaleString()} SYP</TableCell>
-                <TableCell>{p.stock}</TableCell>
+                <TableCell>
+                  {p.stock === 0 ? (
+                    <Badge variant="destructive" className="gap-1"><AlertTriangle className="h-3 w-3" />0</Badge>
+                  ) : p.stock <= 5 ? (
+                    <Badge className="bg-orange-500/20 text-orange-600 hover:bg-orange-500/30 gap-1"><AlertTriangle className="h-3 w-3" />{p.stock}</Badge>
+                  ) : (
+                    <span>{p.stock}</span>
+                  )}
+                </TableCell>
                 <TableCell>{p.featured ? "✓" : "—"}</TableCell>
                 <TableCell className="text-end space-x-1">
                   <Button size="icon" variant="ghost" onClick={() => openEdit(p)}><Pencil className="h-4 w-4" /></Button>
@@ -192,8 +218,8 @@ const AdminProducts = () => {
                 </TableCell>
               </TableRow>
             ))}
-            {products.length === 0 && (
-              <TableRow><TableCell colSpan={5} className="text-center text-muted-foreground py-8">{lang === "ar" ? "لا توجد منتجات" : "No products yet"}</TableCell></TableRow>
+            {filtered.length === 0 && (
+              <TableRow><TableCell colSpan={5} className="text-center text-muted-foreground py-8">{lang === "ar" ? "لا توجد منتجات" : "No products"}</TableCell></TableRow>
             )}
           </TableBody>
         </Table>
