@@ -32,12 +32,8 @@ const TrackOrder = () => {
     e.preventDefault();
     if (!phone.trim()) return;
     setLoading(true);
-    const { data } = await supabase
-      .from("orders")
-      .select("id, customer_name, city, status, total, created_at")
-      .eq("customer_phone", phone.trim())
-      .order("created_at", { ascending: false });
-    setOrders((data as Order[]) || []);
+    const { data } = await supabase.functions.invoke("track-orders", { body: { phone: phone.trim() } });
+    setOrders((data?.orders as Order[]) || []);
     setLoading(false);
   };
 

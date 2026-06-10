@@ -49,18 +49,9 @@ const Checkout = () => {
     if (!couponCode.trim()) return;
     setValidatingCoupon(true);
     const code = couponCode.trim().toUpperCase();
-    const { data } = await supabase
-      .from("coupons")
-      .select("id, code, discount_percent, max_uses, used_count, expires_at, active")
-      .eq("code", code)
-      .eq("active", true)
-      .maybeSingle();
+    const { data } = await supabase.functions.invoke("validate-coupon", { body: { code } });
     setValidatingCoupon(false);
-    if (
-      !data ||
-      (data.expires_at && new Date(data.expires_at) < new Date()) ||
-      (data.max_uses && data.used_count >= data.max_uses)
-    ) {
+    if (!data || !data.valid) {
       toast.error(t("invalidCoupon"));
       return;
     }

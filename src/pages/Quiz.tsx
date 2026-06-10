@@ -135,37 +135,24 @@ const Quiz = () => {
 
     setLoading(true);
     try {
-      // Check if phone already used
-      const { data: existing } = await supabase
-        .from("quiz_discounts")
-        .select("*")
-        .eq("phone", phone)
-        .maybeSingle();
-
-      if (existing) {
+      const perfume = getRecommendation();
+      const { data, error } = await supabase.functions.invoke("submit-quiz-discount", {
+        body: {
+          phone,
+          recommended_product: perfume.name,
+          recommended_product_ar: perfume.nameAr,
+        },
+      });
+      if (error || !data || data.error) throw error || new Error(data?.error || "failed");
+      if (data.existing) {
         setAlreadyUsed(true);
         setResult({
-          perfume: perfumes.find((p) => p.name === existing.recommended_product) || perfumes[0],
-          code: existing.discount_code,
+          perfume: perfumes.find((p) => p.name === data.recommended_product) || perfume,
+          code: data.discount_code,
         });
-        setStep(7);
-        setLoading(false);
-        return;
+      } else {
+        setResult({ perfume, code: data.discount_code });
       }
-
-      const perfume = getRecommendation();
-      const code = generateCode();
-
-      const { error } = await supabase.from("quiz_discounts").insert({
-        phone,
-        discount_code: code,
-        recommended_product: perfume.name,
-        recommended_product_ar: perfume.nameAr,
-      });
-
-      if (error) throw error;
-
-      setResult({ perfume, code });
       setStep(7);
     } catch (err) {
       console.error(err);

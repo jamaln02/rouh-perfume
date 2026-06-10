@@ -36,10 +36,9 @@ const OrderSuccess = () => {
   useEffect(() => {
     if (!id) return;
     (async () => {
-      const { data: o } = await supabase.from("orders").select("*").eq("id", id).maybeSingle();
-      const { data: its } = await supabase.from("order_items").select("*").eq("order_id", id);
-      setOrder(o as OrderData | null);
-      setItems((its as OrderItem[]) || []);
+      const { data } = await supabase.functions.invoke("get-order", { body: { id } });
+      setOrder((data?.order as OrderData) ?? null);
+      setItems((data?.items as OrderItem[]) || []);
       setLoading(false);
     })();
   }, [id]);
