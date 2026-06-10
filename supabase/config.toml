@@ -1,1 +1,13 @@
 project_id = "xojlwwcfkfbslfybyjaj"
+
+[functions.validate-coupon]
+verify_jwt = false
+
+[functions.get-order]
+verify_jwt = false
+
+[functions.track-orders]
+verify_jwt = false
+
+[functions.submit-quiz-discount]
+verify_jwt = false
