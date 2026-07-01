@@ -123,10 +123,12 @@ const Navbar = () => {
             {isAdmin && (
               <Link
                 to="/admin"
-                className={`p-2 rounded-lg ${textColor} hover:text-primary hover:bg-primary/5 transition-all duration-200`}
+                className="hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-all duration-200 text-xs font-semibold shadow-sm"
                 aria-label="Admin"
+                title={lang === "ar" ? "لوحة التحكم" : "Admin Dashboard"}
               >
-                <Shield size={18} />
+                <Shield size={16} />
+                <span>{lang === "ar" ? "الإدارة" : "Admin"}</span>
               </Link>
             )}
 
@@ -233,6 +235,18 @@ const Navbar = () => {
                   </Link>
                 </motion.div>
               ))}
+              {isAdmin && (
+                <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}>
+                  <Link
+                    to="/admin"
+                    onClick={() => setMobileOpen(false)}
+                    className="flex items-center gap-2 text-base font-semibold py-3 px-4 rounded-xl bg-primary text-primary-foreground mt-2"
+                  >
+                    <Shield size={18} />
+                    {lang === "ar" ? "لوحة التحكم" : "Admin Dashboard"}
+                  </Link>
+                </motion.div>
+              )}
             </div>
           </motion.div>
         )}
