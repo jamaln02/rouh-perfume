@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ShoppingBag, Menu, X, Globe, Search, User, Shield, ChevronDown, Heart } from "lucide-react";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator, DropdownMenuLabel } from "@/components/ui/dropdown-menu";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCart } from "@/contexts/CartContext";
 import { useWishlist } from "@/contexts/WishlistContext";
@@ -133,13 +134,38 @@ const Navbar = () => {
             )}
 
             {user ? (
-              <button
-                onClick={signOut}
-                className={`p-2 rounded-lg ${textColor} hover:text-primary hover:bg-primary/5 transition-all duration-200`}
-                aria-label="Sign Out"
-              >
-                <User size={18} />
-              </button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button
+                    className={`p-2 rounded-lg ${textColor} hover:text-primary hover:bg-primary/5 transition-all duration-200`}
+                    aria-label="Account"
+                  >
+                    <User size={18} />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56 bg-background">
+                  <DropdownMenuLabel className="truncate">{user.email}</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  {isAdmin && (
+                    <DropdownMenuItem asChild>
+                      <Link to="/admin" className="cursor-pointer">
+                        <Shield className="h-4 w-4 me-2" />
+                        {lang === "ar" ? "لوحة التحكم" : "Admin Dashboard"}
+                      </Link>
+                    </DropdownMenuItem>
+                  )}
+                  <DropdownMenuItem asChild>
+                    <Link to="/track" className="cursor-pointer">{lang === "ar" ? "تتبع طلباتي" : "Track My Orders"}</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/wishlist" className="cursor-pointer">{lang === "ar" ? "المفضلة" : "Wishlist"}</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={signOut} className="text-destructive cursor-pointer">
+                    {lang === "ar" ? "تسجيل الخروج" : "Sign Out"}
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             ) : (
               <Link
                 to="/auth"
