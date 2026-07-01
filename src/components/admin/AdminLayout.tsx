@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Navigate, Outlet, useLocation, Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -16,7 +16,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { LayoutDashboard, Package, FolderTree, ShoppingCart, Users, LogOut, Home, Star, Tag } from "lucide-react";
+import { LayoutDashboard, Package, FolderTree, ShoppingCart, Users, LogOut, Home, Star, Tag, Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const AdminLayout = () => {
@@ -24,6 +24,14 @@ const AdminLayout = () => {
   const { lang } = useLanguage();
   const location = useLocation();
   const navigate = useNavigate();
+  const [unreadOrders, setUnreadOrders] = useState<number>(0);
+
+  // Request browser notification permission once
+  useEffect(() => {
+    if (isAdmin && typeof Notification !== "undefined" && Notification.permission === "default") {
+      Notification.requestPermission().catch(() => {});
+    }
+  }, [isAdmin]);
 
   useEffect(() => {
     if (!isAdmin) return;
@@ -34,6 +42,7 @@ const AdminLayout = () => {
         { event: "INSERT", schema: "public", table: "orders" },
         (payload) => {
           const o = payload.new as { id: string; customer_name: string; total: number };
+          setUnreadOrders((n) => n + 1);
           // Play subtle notification sound
           try {
             const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
@@ -49,6 +58,25 @@ const AdminLayout = () => {
             osc.stop(ctx.currentTime + 0.4);
           } catch (_) { /* ignore */ }
 
+          // Browser notification (works even when tab is in background)
+          try {
+            if (typeof Notification !== "undefined" && Notification.permission === "granted") {
+              const n = new Notification(
+                lang === "ar" ? "🛒 طلب جديد" : "🛒 New Order",
+                {
+                  body: `${o.customer_name} — ${o.total.toLocaleString()} SYP`,
+                  icon: "/favicon.ico",
+                  tag: `order-${o.id}`,
+                }
+              );
+              n.onclick = () => {
+                window.focus();
+                navigate("/admin/orders");
+                n.close();
+              };
+            }
+          } catch (_) { /* ignore */ }
+
           toast.success(
             lang === "ar"
               ? `🛒 طلب جديد من ${o.customer_name}`
@@ -58,7 +86,7 @@ const AdminLayout = () => {
               duration: 8000,
               action: {
                 label: lang === "ar" ? "عرض" : "View",
-                onClick: () => navigate("/admin/orders"),
+                onClick: () => { setUnreadOrders(0); navigate("/admin/orders"); },
               },
             }
           );
@@ -70,6 +98,11 @@ const AdminLayout = () => {
       supabase.removeChannel(channel);
     };
   }, [isAdmin, lang, navigate]);
+
+  // Clear the badge when the admin opens the orders page
+  useEffect(() => {
+    if (location.pathname === "/admin/orders") setUnreadOrders(0);
+  }, [location.pathname]);
 
   if (loading) return <div className="min-h-screen flex items-center justify-center"><div className="animate-spin h-8 w-8 border-2 border-primary border-t-transparent rounded-full" /></div>;
   if (!user) return <Navigate to="/auth" replace />;
@@ -146,6 +179,21 @@ const AdminLayout = () => {
         <div className="flex-1 flex flex-col">
           <header className="h-14 flex items-center border-b border-border px-4">
             <SidebarTrigger />
+            <div className="ms-auto flex items-center gap-2">
+              <Link
+                to="/admin/orders"
+                className="relative p-2 rounded-lg hover:bg-muted transition-colors"
+                aria-label={lang === "ar" ? "الإشعارات" : "Notifications"}
+                title={lang === "ar" ? "الطلبات الجديدة" : "New orders"}
+              >
+                <Bell className="h-5 w-5 text-muted-foreground" />
+                {unreadOrders > 0 && (
+                  <span className="absolute -top-0.5 -right-0.5 bg-primary text-primary-foreground text-[10px] min-w-[18px] h-[18px] px-1 rounded-full flex items-center justify-center font-bold leading-none">
+                    {unreadOrders}
+                  </span>
+                )}
+              </Link>
+            </div>
           </header>
           <main className="flex-1 p-6 overflow-auto">
             <Outlet />
