@@ -18,6 +18,7 @@ const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [loyaltyPoints, setLoyaltyPoints] = useState<number | null>(null);
   const location = useLocation();
 
   useEffect(() => {
@@ -31,6 +32,12 @@ const Navbar = () => {
     setMobileOpen(false);
     setSearchOpen(false);
   }, [location.pathname]);
+
+  useEffect(() => {
+    if (!user) { setLoyaltyPoints(null); return; }
+    supabase.from("profiles").select("loyalty_points").eq("id", user.id).maybeSingle()
+      .then(({ data }) => setLoyaltyPoints((data as any)?.loyalty_points ?? 0));
+  }, [user]);
 
   const links = [
     { to: "/", label: t("home") },
