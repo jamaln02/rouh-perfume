@@ -153,6 +153,15 @@ const Navbar = () => {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56 bg-background">
                   <DropdownMenuLabel className="truncate">{user.email}</DropdownMenuLabel>
+                  {loyaltyPoints !== null && (
+                    <div className="mx-2 my-1 rounded-md bg-gradient-to-r from-primary/15 to-primary/5 border border-primary/20 px-3 py-2 flex items-center gap-2">
+                      <Sparkles className="h-4 w-4 text-primary" />
+                      <div className="flex-1">
+                        <p className="text-[10px] text-muted-foreground leading-none">{lang === "ar" ? "نقاط الولاء" : "Loyalty Points"}</p>
+                        <p className="text-sm font-bold text-primary leading-tight">{loyaltyPoints.toLocaleString()}</p>
+                      </div>
+                    </div>
+                  )}
                   <DropdownMenuSeparator />
                   {isAdmin && (
                     <DropdownMenuItem asChild>
