@@ -51,8 +51,8 @@ const AdminReviews = () => {
   return (
     <div>
       <h1 className="text-2xl font-display font-bold mb-6">{lang === "ar" ? "إدارة التقييمات" : "Manage Reviews"}</h1>
-      <div className="border rounded-lg overflow-hidden">
-        <Table>
+      <div className="border rounded-lg overflow-x-auto">
+        <Table className="min-w-[640px]">
           <TableHeader>
             <TableRow>
               <TableHead>{lang === "ar" ? "المنتج" : "Product"}</TableHead>
