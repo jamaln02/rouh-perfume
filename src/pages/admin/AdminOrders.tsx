@@ -216,8 +216,8 @@ const AdminOrders = () => {
         <div className="text-sm text-muted-foreground">{filtered.length} / {orders.length}</div>
       </div>
 
-      <div className="border rounded-lg overflow-hidden">
-        <Table>
+      <div className="border rounded-lg overflow-x-auto">
+        <Table className="min-w-[720px]">
           <TableHeader>
             <TableRow>
               <TableHead>{lang === "ar" ? "العميل" : "Customer"}</TableHead>
