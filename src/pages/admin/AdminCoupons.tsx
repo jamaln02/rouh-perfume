@@ -69,8 +69,8 @@ const AdminCoupons = () => {
         <h1 className="text-2xl font-display font-bold">{lang === "ar" ? "كوبونات الخصم" : "Coupons"}</h1>
         <Button onClick={() => setOpen(true)}><Plus className="h-4 w-4 mr-1" /> {lang === "ar" ? "إنشاء" : "New"}</Button>
       </div>
-      <div className="border rounded-lg overflow-hidden">
-        <Table>
+      <div className="border rounded-lg overflow-x-auto">
+        <Table className="min-w-[640px]">
           <TableHeader>
             <TableRow>
               <TableHead>{lang === "ar" ? "الكود" : "Code"}</TableHead>

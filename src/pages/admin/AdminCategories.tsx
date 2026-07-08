@@ -69,8 +69,8 @@ const AdminCategories = () => {
         </Dialog>
       </div>
 
-      <div className="border rounded-lg overflow-hidden">
-        <Table>
+      <div className="border rounded-lg overflow-x-auto">
+        <Table className="min-w-[640px]">
           <TableHeader>
             <TableRow>
               <TableHead>{lang === "ar" ? "الاسم" : "Name"}</TableHead>

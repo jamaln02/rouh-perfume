@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { ShoppingBag, Menu, X, Globe, Search, User, Shield, ChevronDown, Heart } from "lucide-react";
+import { ShoppingBag, Menu, X, Globe, Search, User, Shield, ChevronDown, Heart, Sparkles } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator, DropdownMenuLabel } from "@/components/ui/dropdown-menu";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCart } from "@/contexts/CartContext";
 import { useWishlist } from "@/contexts/WishlistContext";
 import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
 import { motion, AnimatePresence } from "framer-motion";
 import rouhLogo from "@/assets/rouh-logo-transparent.png.asset.json";
 
@@ -17,6 +18,7 @@ const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [loyaltyPoints, setLoyaltyPoints] = useState<number | null>(null);
   const location = useLocation();
 
   useEffect(() => {
@@ -30,6 +32,12 @@ const Navbar = () => {
     setMobileOpen(false);
     setSearchOpen(false);
   }, [location.pathname]);
+
+  useEffect(() => {
+    if (!user) { setLoyaltyPoints(null); return; }
+    supabase.from("profiles").select("loyalty_points").eq("id", user.id).maybeSingle()
+      .then(({ data }) => setLoyaltyPoints((data as any)?.loyalty_points ?? 0));
+  }, [user]);
 
   const links = [
     { to: "/", label: t("home") },
@@ -145,6 +153,15 @@ const Navbar = () => {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56 bg-background">
                   <DropdownMenuLabel className="truncate">{user.email}</DropdownMenuLabel>
+                  {loyaltyPoints !== null && (
+                    <div className="mx-2 my-1 rounded-md bg-gradient-to-r from-primary/15 to-primary/5 border border-primary/20 px-3 py-2 flex items-center gap-2">
+                      <Sparkles className="h-4 w-4 text-primary" />
+                      <div className="flex-1">
+                        <p className="text-[10px] text-muted-foreground leading-none">{lang === "ar" ? "نقاط الولاء" : "Loyalty Points"}</p>
+                        <p className="text-sm font-bold text-primary leading-tight">{loyaltyPoints.toLocaleString()}</p>
+                      </div>
+                    </div>
+                  )}
                   <DropdownMenuSeparator />
                   {isAdmin && (
                     <DropdownMenuItem asChild>
