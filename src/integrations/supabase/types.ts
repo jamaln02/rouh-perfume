@@ -38,37 +38,93 @@ export type Database = {
         }
         Relationships: []
       }
+      coupon_redemptions: {
+        Row: {
+          code: string
+          coupon_id: string | null
+          discount_amount: number
+          discount_percent: number
+          id: string
+          order_id: string | null
+          phone: string | null
+          redeemed_at: string
+          source: string
+          user_id: string | null
+        }
+        Insert: {
+          code: string
+          coupon_id?: string | null
+          discount_amount?: number
+          discount_percent: number
+          id?: string
+          order_id?: string | null
+          phone?: string | null
+          redeemed_at?: string
+          source: string
+          user_id?: string | null
+        }
+        Update: {
+          code?: string
+          coupon_id?: string | null
+          discount_amount?: number
+          discount_percent?: number
+          id?: string
+          order_id?: string | null
+          phone?: string | null
+          redeemed_at?: string
+          source?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "coupon_redemptions_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       coupons: {
         Row: {
           active: boolean
+          assigned_to_phone: string | null
+          assigned_to_user_id: string | null
           code: string
           created_at: string
           discount_percent: number
           expires_at: string | null
           id: string
           max_uses: number | null
+          per_user_limit: number
           updated_at: string
           used_count: number
         }
         Insert: {
           active?: boolean
+          assigned_to_phone?: string | null
+          assigned_to_user_id?: string | null
           code: string
           created_at?: string
           discount_percent: number
           expires_at?: string | null
           id?: string
           max_uses?: number | null
+          per_user_limit?: number
           updated_at?: string
           used_count?: number
         }
         Update: {
           active?: boolean
+          assigned_to_phone?: string | null
+          assigned_to_user_id?: string | null
           code?: string
           created_at?: string
           discount_percent?: number
           expires_at?: string | null
           id?: string
           max_uses?: number | null
+          per_user_limit?: number
           updated_at?: string
           used_count?: number
         }
