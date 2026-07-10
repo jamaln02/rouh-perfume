@@ -47,12 +47,23 @@ const Checkout = () => {
 
   const applyCoupon = async () => {
     if (!couponCode.trim()) return;
+    if (!form.phone.trim() || form.phone.trim().length < 6) {
+      toast.error(lang === "ar" ? "أدخل رقم الهاتف أولاً لتطبيق الكوبون" : "Enter your phone number first to apply the coupon");
+      return;
+    }
     setValidatingCoupon(true);
     const code = couponCode.trim().toUpperCase();
-    const { data } = await supabase.functions.invoke("validate-coupon", { body: { code } });
+    const { data } = await supabase.functions.invoke("validate-coupon", {
+      body: { code, user_id: user?.id ?? null, phone: form.phone.trim() },
+    });
     setValidatingCoupon(false);
     if (!data || !data.valid) {
-      toast.error(t("invalidCoupon"));
+      const reason = data?.reason;
+      const msg =
+        reason === "already_used" ? (lang === "ar" ? "لقد استخدمت هذا الكوبون سابقاً" : "You have already used this coupon")
+        : reason === "not_assigned" ? (lang === "ar" ? "هذا الكوبون غير مخصص لك" : "This coupon is not assigned to you")
+        : t("invalidCoupon");
+      toast.error(msg);
       return;
     }
     setAppliedCoupon({ id: data.id, code: data.code, discount_percent: data.discount_percent });
@@ -101,17 +112,17 @@ const Checkout = () => {
       const { error: itemsError } = await supabase.from("order_items").insert(orderItems);
       if (itemsError) throw itemsError;
 
-      // Increment coupon usage
+      // Log redemption + increment usage (server-side, atomic)
       if (appliedCoupon) {
-        const { data: c } = await supabase
-          .from("coupons")
-          .select("used_count")
-          .eq("id", appliedCoupon.id)
-          .single();
-        await supabase
-          .from("coupons")
-          .update({ used_count: (c?.used_count || 0) + 1 })
-          .eq("id", appliedCoupon.id);
+        await supabase.functions.invoke("redeem-coupon", {
+          body: {
+            code: appliedCoupon.code,
+            order_id: orderId,
+            user_id: user?.id ?? null,
+            phone: form.phone.trim(),
+            discount_amount: discountAmount,
+          },
+        });
       }
 
       clearCart();
