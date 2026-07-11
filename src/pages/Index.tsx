@@ -44,7 +44,7 @@ const Index = () => {
           className="absolute inset-0 w-full h-full object-cover"
           width={1920}
           height={1080}
-          fetchPriority="high"
+          {...({ fetchpriority: "high" } as any)}
         />
         <div className="absolute inset-0 bg-gradient-to-r from-foreground/85 via-foreground/60 to-foreground/20" />
         <div className="absolute inset-0 bg-gradient-to-t from-foreground/40 to-transparent" />

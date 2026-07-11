@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCart } from "@/contexts/CartContext";
 import { useAuth } from "@/hooks/useAuth";
@@ -37,6 +37,11 @@ const Checkout = () => {
   const [couponCode, setCouponCode] = useState("");
   const [appliedCoupon, setAppliedCoupon] = useState<{ code: string; discount_percent: number; id: string } | null>(null);
   const [validatingCoupon, setValidatingCoupon] = useState(false);
+
+  // Redirect to cart if empty — must be in effect, not during render
+  useEffect(() => {
+    if (items.length === 0) navigate("/cart", { replace: true });
+  }, [items.length, navigate]);
 
   const formatPrice = (price: number) =>
     new Intl.NumberFormat(lang === "ar" ? "ar-SY" : "en-SY").format(price);
@@ -136,10 +141,7 @@ const Checkout = () => {
     }
   };
 
-  if (items.length === 0) {
-    navigate("/cart");
-    return null;
-  }
+  if (items.length === 0) return null;
 
   const inputClass =
     "w-full bg-background text-foreground px-4 py-3 rounded-xl border border-border outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary placeholder:text-muted-foreground transition-all duration-200";
